@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-      "module": "ES2022",
+      "module": "NodeNext",
       "sourceMap": true,
       "sourceRoot": "./src",
       "outDir": "./dist",
       "target": "ES2022",
       "strictNullChecks":true,
+      "moduleResolution": "NodeNext"
     },
     "include": [
       "src"

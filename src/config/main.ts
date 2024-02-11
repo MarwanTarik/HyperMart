@@ -7,11 +7,23 @@ appConfigs.set('development', development)
 process.env.NODE_ENV = process.env.NODE_ENV ?? 'development'
 const stage = process.env.STAGE
 
-const { port } = appConfigs.get(stage)
+const {
+  PORT,
+  DB_HOST,
+  DB_PASSWORD,
+  DATABASE,
+  DB_USER,
+  DB_PORT
+} = appConfigs.get(stage)
 
 const stageConfig = {
   stage,
-  port
+  PORT,
+  DB_HOST,
+  DB_PASSWORD,
+  DATABASE,
+  DB_USER,
+  DB_PORT
 }
 
 export default stageConfig

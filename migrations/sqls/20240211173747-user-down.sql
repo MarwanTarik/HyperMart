@@ -1,0 +1,4 @@
+/* Replace with your SQL commands */
+DROP TABLE IF EXISTS Users CASCADE;
+DROP TABLE IF EXISTS Countries CASCADE;
+DROP TABLE IF EXISTS Cities CASCADE;
