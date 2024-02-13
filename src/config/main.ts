@@ -13,7 +13,8 @@ const {
   DB_PASSWORD,
   DATABASE,
   DB_USER,
-  DB_PORT
+  DB_PORT,
+  PHONENUMBER_API_KEY
 } = appConfigs.get(stage)
 
 const stageConfig = {
@@ -23,7 +24,8 @@ const stageConfig = {
   DB_PASSWORD,
   DATABASE,
   DB_USER,
-  DB_PORT
+  DB_PORT,
+  PHONENUMBER_API_KEY
 }
 
 export default stageConfig
