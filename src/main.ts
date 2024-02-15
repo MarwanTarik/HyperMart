@@ -1,4 +1,4 @@
-import config from './config/main'
+import config from './configs/main'
 import App from './app'
 
 App.listen(config.PORT, function startServer () {

@@ -1,4 +1,4 @@
-import stageConfig from '../../config/main'
+import stageConfig from '../../configs/main'
 
 class PhoneNumberChecker {
   private readonly phoneNumber: string
