@@ -1,6 +1,15 @@
-const role = {
+const Roles = {
   customer: 'customer',
   seller: 'seller'
+}
+
+const Cities = {
+  giza: 'gz',
+  cairo: 'ca'
+}
+
+const Countries = {
+  egypt: 'eg'
 }
 
 class User {
@@ -98,5 +107,7 @@ class User {
 
 export {
   User,
-  role
+  Roles,
+  Cities,
+  Countries
 }
