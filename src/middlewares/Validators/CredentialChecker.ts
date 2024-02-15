@@ -1,24 +1,14 @@
 import { getDBPool } from '../../database/main'
-import Checker from './Checker'
 
-class CredentialChecker extends Checker {
+class CredentialChecker {
   role: string
   email: string
   hashedPassword: string
 
   constructor (role: string, email: string, hashedPassword: string) {
-    super()
     this.role = role
     this.email = email
     this.hashedPassword = hashedPassword
-  }
-
-  async check (): Promise<boolean> {
-    const valid = await this.checkCredentials()
-    if (!valid) {
-      return false
-    }
-    return await super.callNext()
   }
 
   async checkCredentials (): Promise<boolean> {

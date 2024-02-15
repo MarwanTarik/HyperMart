@@ -1,22 +1,12 @@
-import Checker from './Checker'
 import stageConfig from '../../config/main'
 
-class PhoneNumberChecker extends Checker {
-  phoneNumber: string
-  countryCode: string
+class PhoneNumberChecker {
+  private readonly phoneNumber: string
+  private readonly countryCode: string
 
   constructor (phoneNumber: string, countryCode: string) {
-    super()
     this.phoneNumber = phoneNumber
     this.countryCode = countryCode
-  }
-
-  async check (): Promise<boolean> {
-    const valid = await this.checkPhoneNumber()
-    if (!valid) {
-      return false
-    }
-    return await super.callNext()
   }
 
   async checkPhoneNumber (): Promise<boolean> {
