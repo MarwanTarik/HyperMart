@@ -1,5 +1,5 @@
 import { Pool } from 'pg'
-import stageConfig from '../config/main'
+import stageConfig from '../configs/main'
 
 const pool = new Pool({
   user: stageConfig.DB_USER,
