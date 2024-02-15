@@ -1,8 +1,11 @@
 import express from 'express'
 import morgan from 'morgan'
+import corsOptionsDelegate from './configs/cors'
+import cors from 'cors'
 
 const App = express()
 
+App.use(cors(corsOptionsDelegate))
 App.use(morgan('dev'))
 App.use(express.json())
 App.use(express.urlencoded({ extended: true }))
