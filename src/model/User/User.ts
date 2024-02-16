@@ -1,15 +1,15 @@
 const Roles = {
-  customer: 'customer',
-  seller: 'seller'
+  CUSTOMER: 'customer',
+  SELLER: 'seller'
 }
 
 const Cities = {
-  giza: 'gz',
-  cairo: 'ca'
+  GIZA: 'gz',
+  CAIRO: 'ca'
 }
 
 const Countries = {
-  egypt: 'eg'
+  EGYPT: 'eg'
 }
 
 class User {
