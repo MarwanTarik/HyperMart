@@ -1,4 +1,4 @@
-import development from './development'
+import development from './development.config'
 import 'dotenv/config'
 
 const appConfigs = new Map()

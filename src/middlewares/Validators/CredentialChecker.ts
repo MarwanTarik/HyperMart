@@ -1,4 +1,4 @@
-import { getDBPool } from '../../database/main'
+import { getDBPool } from '../../database/main.database'
 
 class CredentialChecker {
   role: string
@@ -16,7 +16,6 @@ class CredentialChecker {
     const result = await pool.query(` SELECT EXISTS (
           SELECT 1 FROM Users WHERE password_hash = $1 AND role = $2 AND email = $3
       )`, [this.hashedPassword, this.role, this.email])
-
     const valid = result.fields[0].name
     if (valid === 'false') {
       return false

@@ -1,6 +1,6 @@
 import express from 'express'
 import morgan from 'morgan'
-import corsOptionsDelegate from './configs/cors'
+import corsOptionsDelegate from './configs/cors.config'
 import cors from 'cors'
 
 const App = express()
