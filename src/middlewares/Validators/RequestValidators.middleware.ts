@@ -1,6 +1,6 @@
 import { body, checkExact } from 'express-validator'
-import { Cities, Countries, Roles } from '../../model/User/User'
-import PhoneNumberChecker from './PhoneNumberChecke'
+import { Cities, Countries, Roles } from '../../model/User/User.model'
+import PhoneNumberChecker from './PhoneNumberChecke.middleware'
 
 const RequestValidators = {
   SIGNUP: [
