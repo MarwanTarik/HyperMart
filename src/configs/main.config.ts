@@ -16,7 +16,8 @@ const {
   DB_PORT,
   PHONENUMBER_API_KEY,
   JWT_SECRET,
-  SALT
+  SALT,
+  LOGS_FILE_PATH
 } = appConfigs.get(stage)
 
 const stageConfig = {
@@ -29,7 +30,8 @@ const stageConfig = {
   DB_PORT,
   PHONENUMBER_API_KEY,
   JWT_SECRET,
-  SALT
+  SALT,
+  LOGS_FILE_PATH
 }
 
 export default stageConfig

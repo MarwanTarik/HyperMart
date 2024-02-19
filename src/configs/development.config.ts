@@ -11,7 +11,8 @@ const development = {
   DATABASE: environment.DEV_DATABASE,
   PHONENUMBER_API_KEY: environment.PHONENUMBER_API_KEY,
   JWT_SECRET: environment.DEV_JWT_TOKEN_SECRET,
-  SALT: environment.SALT
+  SALT: environment.SALT,
+  LOGS_FILE_PATH: environment.LOGS_FILE_PATH
 }
 
 export default development
