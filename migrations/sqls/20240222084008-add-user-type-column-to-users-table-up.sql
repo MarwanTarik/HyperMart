@@ -1,0 +1,3 @@
+ALTER TABLE users 
+ADD COLUMN type_id INTEGER;
+
