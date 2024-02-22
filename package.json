@@ -9,6 +9,7 @@
   "scripts": {
     "migrate:up": "db-migrate up",
     "migrate:down": "db-migrate down",
+    "db-reset": "db-migrate reset",
     "dev": "tsx ./src/main.ts",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/main.js",
