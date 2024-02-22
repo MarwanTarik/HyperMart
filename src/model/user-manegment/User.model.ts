@@ -1,17 +1,3 @@
-const Roles = {
-  CUSTOMER: 'customer',
-  SELLER: 'seller'
-}
-
-const Cities = {
-  GIZA: 'gz',
-  CAIRO: 'ca'
-}
-
-const Countries = {
-  EGYPT: 'eg'
-}
-
 class User {
   private ID: string
   private role: string
@@ -105,9 +91,4 @@ class User {
   }
 }
 
-export {
-  User,
-  Roles,
-  Cities,
-  Countries
-}
+export default User

@@ -1,5 +1,5 @@
 import { body, checkExact } from 'express-validator'
-import { Cities, Countries, Roles } from '../../model/User/User.model'
+import { Cities, Countries, Roles } from '../../model/user-manegment/User.model'
 import PhoneNumberChecker from './PhoneNumberChecke.middleware'
 
 const RequestValidators = {
