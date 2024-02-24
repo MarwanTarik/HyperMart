@@ -10,13 +10,13 @@ class LoggerService {
 
     const logger = winston.createLogger({
       level: 'info',
-      format: winston.format.printf(({ level, message, timestamp }) => {
-        const formatedMessage = `
-        ${timestamp({ format: 'YYYY/MM/DD HH:mm:ss' })} | 
-        ${level.toUpperCase()} | 
-        ${message} |`
-        return formatedMessage
-      }),
+      format: winston.format.combine(
+        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+        winston.format.printf(({ level, message, timestamp }) => {
+          const formattedMessage = `${timestamp} | ${level.toUpperCase()} | ${message} |`
+          return formattedMessage
+        })
+      ),
       transports: [
         new winston.transports.Console(),
         new winston.transports.File({
