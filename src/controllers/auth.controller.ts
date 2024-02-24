@@ -15,7 +15,7 @@ function generateAccessToken (userID: string): string {
       true
     )
   }
-  return jwt.sign(userID, secret, { expiresIn: '1800s' })
+  return jwt.sign({ userID }, secret, { expiresIn: '5000s' })
 }
 
 function authenticateToken (req: Request, _res: Response, _next: NextFunction): string | JwtPayload | undefined {
