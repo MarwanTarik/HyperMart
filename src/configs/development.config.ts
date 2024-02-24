@@ -11,7 +11,7 @@ const development = {
   DATABASE: environment.DEV_DATABASE,
   PHONENUMBER_API_KEY: environment.PHONENUMBER_API_KEY,
   JWT_SECRET: environment.DEV_JWT_TOKEN_SECRET,
-  SALT: environment.SALT,
+  SALT_SIZE: environment.SALT_SIZE,
   LOGS_FILE_PATH: environment.LOGS_FILE_PATH
 }
 
