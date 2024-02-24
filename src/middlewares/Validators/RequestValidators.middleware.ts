@@ -1,14 +1,23 @@
 import { body, checkExact } from 'express-validator'
-import { Cities, Countries, Roles } from '../../model/user-manegment/User.model'
+import Cities from '../../model/user-manegment/Cities.model'
+import Countries from '../../model/user-manegment/Countries.model'
 import PhoneNumberChecker from './PhoneNumberChecke.middleware'
+import Groups from '../../model/user-manegment/Groups.model'
+import Roles from '../../model/user-manegment/Roles.models'
 
 const RequestValidators = {
   SIGNUP: [
     checkExact([
-      body('role')
+      body('group')
         .isString()
         .notEmpty()
-        .custom((role) => { return role in Roles }),
+        .custom((group) => {
+          return group.toUpperCase() in Groups
+        })
+        .custom((group) => {
+          const currGroup = Groups[group.toUpperCase()]
+          return currGroup.includes(Roles.SIGNUP)
+        }),
       body('first-name')
         .isString()
         .notEmpty(),
@@ -45,6 +54,16 @@ const RequestValidators = {
   ],
   LOGIN: [
     checkExact([
+      body('group')
+        .isString()
+        .notEmpty()
+        .custom((group) => {
+          return group.toUpperCase() in Groups
+        })
+        .custom((group) => {
+          const currGroup = Groups[group.toUpperCase()]
+          return currGroup.includes(Roles.LOGIN)
+        }),
       body('email')
         .isString()
         .notEmpty()
