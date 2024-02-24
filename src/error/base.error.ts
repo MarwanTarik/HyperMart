@@ -1,12 +1,12 @@
 class BaseError extends Error {
-  name: string
+  type: string
   httpStatueCode: number
   description: string
   isOperational: boolean
 
-  public constructor (name: string, httpStatusCode: number, description: string, isOperational: boolean) {
+  public constructor (type: string, httpStatusCode: number, description: string, isOperational: boolean) {
     super(description)
-    this.name = name
+    this.type = type
     this.httpStatueCode = httpStatusCode
     this.description = description
     this.isOperational = isOperational
