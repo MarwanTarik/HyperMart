@@ -3,6 +3,9 @@ import stageConfig from '../configs/main.config'
 import DatabaseError from '../error/database.error'
 import ErrorType from '../error/error.type'
 import HttpStatusCode from '../error/error.status'
+import LoggerService from '../services/logger.service'
+
+const logger = new LoggerService('db/postgres').logger
 
 const pool = new Pool({
   user: stageConfig.DB_USER,
@@ -19,23 +22,22 @@ function getDBPool (): Pool {
 }
 
 pool.on('connect', () => {
-  console.log('DB is connected')
+  logger.info('DB is connected')
 })
 
 pool.on('remove', () => {
-  console.log('DB connection removed')
+  logger.info('DB connection removed')
 })
 
 pool.on('error', (err) => {
-  console.log(JSON.stringify(
-    new DatabaseError(
-      ErrorType.DATABASE_ERROR,
-      HttpStatusCode.INTERNAL_SERVER_ERROR,
-      err.message,
-      false,
-      'Postgres DB'
-    )
-  ))
+  const e = new DatabaseError(
+    ErrorType.DATABASE_ERROR,
+    HttpStatusCode.INTERNAL_SERVER_ERROR,
+    err.message,
+    false,
+    'Postgres DB'
+  )
+  logger.error(e)
 })
 
 export {
