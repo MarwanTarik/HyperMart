@@ -1,21 +1,37 @@
 import { type Request, type Response, type NextFunction } from 'express'
-import { signup } from '../controllers/user.controller'
-import type User from '../model/user-manegment/User.model'
+import { login, signup } from '../controllers/user.controller'
 import LoggerService from '../services/logger.service'
+import HttpStatusCode from '../error/error.status'
 
-const loggerService = new LoggerService('/api/user')
+const logger = new LoggerService('/api/user').logger
 
-async function signupHandler (req: Request<unknown, unknown, User>, res: Response, _next: NextFunction): Promise<void> {
+async function signupHandler (req: Request, res: Response, _next: NextFunction): Promise<void> {
   try {
     const token = await signup(req, res, _next)
-    loggerService.logger.info('token created successfully')
+    logger.info('sign up succed')
     res.status(200).json(token)
   } catch (e) {
-    loggerService.logger.error(e)
-    res.status(500).send(e)
+    logger.error(e)
+    res.status(HttpStatusCode.UNATHORIZED).send({
+      details: e.detail,
+      timeStamp: e.timestamp,
+      level: e.level
+    })
+  }
+}
+
+async function loginHandler (req: Request, res: Response, _next: NextFunction): Promise<void> {
+  try {
+    const token = await login(req, res, _next)
+    logger.info('login succed')
+    res.status(200).json(token)
+  } catch (e) {
+    logger.error(e)
+    res.status(HttpStatusCode.UNATHORIZED).json(e)
   }
 }
 
 export {
-  signupHandler
+  signupHandler,
+  loginHandler
 }
