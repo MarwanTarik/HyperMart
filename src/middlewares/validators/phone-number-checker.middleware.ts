@@ -1,5 +1,5 @@
 import stageConfig from '../../configs/main.config'
-import ExternalAPIError from '../../error/externalApi.error'
+import ExternalAPIError from '../../error/external-api.error'
 import ErrorType from '../../error/error.type'
 import HttpStatusCode from '../../error/error.status'
 import APIError from '../../error/api.error'

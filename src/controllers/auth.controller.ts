@@ -1,11 +1,13 @@
 import { type NextFunction, type Request, type Response } from 'express'
-import User from '../model/user-manegment/User.model'
-import { creatUser, getLoginCredentials } from '../database/queries/user-mangment/user.database'
+import User from '../model/user-manegment/user.model'
+import { addUserGroup, creatUser, getLoginCredentials } from '../database/queries/user-mangment/user.database'
 import { comparePassword, hashPassword } from '../utils/hash.utils'
 import APIError from '../error/api.error'
 import ErrorType from '../error/error.type'
 import HttpStatusCode from '../error/error.status'
 import { generateAccessToken } from '../utils/auth.utils'
+import UserType from '../model/user-manegment/user-type.model'
+import { GroupsName } from '../model/user-manegment/groups.model'
 
 async function signup (req: Request, _res: Response, _next: NextFunction): Promise<string> {
   const user = new User(
@@ -21,43 +23,27 @@ async function signup (req: Request, _res: Response, _next: NextFunction): Promi
     await hashPassword(req.body.password as string),
     req.body.active as string
   )
-
   const userID = await creatUser(user)
+  const userType = req.body.type as string
+  const groups: string[] = setGroups(userType)
+  await addUserGroup(userID, groups)
 
   if (userID === null) {
     throw new APIError(
       ErrorType.REQUEST_BODY_ERROR,
       HttpStatusCode.BAD_REQUEST,
-      'signup feiled',
+      'signup failed',
       true
     )
   }
-  return generateAccessToken(userID)
+  return generateAccessToken(userID, groups)
 }
 
 async function login (req: Request, _res: Response, _next: NextFunction): Promise<string> {
-  const username = req.body.username as string
+  const email = req.body.email as string
   const password = req.body.password as string
 
-  if (username === undefined) {
-    throw new APIError(
-      ErrorType.REQUEST_BODY_ERROR,
-      HttpStatusCode.BAD_REQUEST,
-      'username not found in the request body',
-      true
-    )
-  }
-
-  if (password === undefined) {
-    throw new APIError(
-      ErrorType.REQUEST_BODY_ERROR,
-      HttpStatusCode.BAD_REQUEST,
-      'passwprd not found in the request body',
-      true
-    )
-  }
-
-  const credentials = await getLoginCredentials(username)
+  const credentials = await getLoginCredentials(email)
   const validpassword = await comparePassword(password, credentials.passwordHash)
 
   if (!validpassword) {
@@ -68,8 +54,18 @@ async function login (req: Request, _res: Response, _next: NextFunction): Promis
       true
     )
   }
+  return generateAccessToken(credentials.userID, credentials.groups)
+}
 
-  return generateAccessToken(credentials.userID)
+function setGroups (userType: string): string[] {
+  const groups: string[] = []
+
+  if (userType === UserType.CUSTOMER) {
+    groups.push(GroupsName.USER)
+  } else if (userType === UserType.SELLER) {
+    groups.push(GroupsName.USER)
+  }
+  return groups
 }
 
 export {

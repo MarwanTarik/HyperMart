@@ -1,23 +1,16 @@
 import { body, checkExact } from 'express-validator'
-import Cities from '../../model/user-manegment/Cities.model'
-import Countries from '../../model/user-manegment/Countries.model'
-import PhoneNumberChecker from './PhoneNumberChecke.middleware'
-import Groups from '../../model/user-manegment/Groups.model'
-import Roles from '../../model/user-manegment/Roles.models'
+import Cities from '../../model/user-manegment/cities.model'
+import Countries from '../../model/user-manegment/countries.model'
+import PhoneNumberChecker from './phone-number-checker.middleware'
+
+const PASSWORD_RGX = /^(?=.*d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/
 
 const RequestValidators = {
-  SIGNUP: [
+  signup: [
     checkExact([
-      body('group')
+      body('username')
         .isString()
-        .notEmpty()
-        .custom((group) => {
-          return group.toUpperCase() in Groups
-        })
-        .custom((group) => {
-          const currGroup = Groups[group.toUpperCase()]
-          return currGroup.includes(Roles.SIGNUP)
-        }),
+        .notEmpty(),
       body('first-name')
         .isString()
         .notEmpty(),
@@ -49,29 +42,19 @@ const RequestValidators = {
       body('password')
         .isString()
         .notEmpty()
-        .matches(/^(?=.*d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/)
+        .matches(PASSWORD_RGX)
     ])
   ],
-  LOGIN: [
+  login: [
     checkExact([
-      body('group')
-        .isString()
-        .notEmpty()
-        .custom((group) => {
-          return group.toUpperCase() in Groups
-        })
-        .custom((group) => {
-          const currGroup = Groups[group.toUpperCase()]
-          return currGroup.includes(Roles.LOGIN)
-        }),
       body('email')
         .isString()
         .notEmpty()
         .isEmail(),
-      body('passord')
+      body('password')
         .isString()
         .notEmpty()
-        .matches(/^(?=.*d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/)
+        .matches(PASSWORD_RGX)
     ])
   ]
 }

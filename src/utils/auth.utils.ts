@@ -6,7 +6,7 @@ import errorType from '../error/error.type'
 import httpStatusCode from '../error/error.status'
 import { type AuthPayload } from '../types/jwt-payload.type'
 
-function generateAccessToken (userID: string): string {
+function generateAccessToken (userID: string, groups: string[]): string {
   const secret = stageConfig.JWT_SECRET as string
   if (secret === undefined) {
     throw new APIError(
@@ -16,7 +16,7 @@ function generateAccessToken (userID: string): string {
       true
     )
   }
-  return jwt.sign({ userID }, secret, { expiresIn: '5000s' })
+  return jwt.sign({ userID, groups }, secret, { expiresIn: '5000s' })
 }
 
 function authenticateToken (req: Request, _res: Response, _next: NextFunction): AuthPayload {

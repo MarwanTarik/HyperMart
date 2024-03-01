@@ -1,13 +1,11 @@
 import DatabaseError from '../../../error/database.error'
 import HttpStatusCode from '../../../error/error.status'
 import ErrorType from '../../../error/error.type'
-import User from '../../../model/user-manegment/User.model'
+import User from '../../../model/user-manegment/user.model'
 import { type LogingCredentials } from '../../../types/login-credentials.type'
-import { getDBPool } from '../../main.database'
+import { pool } from '../../main.database'
 import { getCityID } from './cities.database'
 import { getCountryID } from './countries.database'
-
-const pool = getDBPool()
 
 async function creatUser (user: User): Promise<string> {
   const query = ` INSERT INTO users (first_name, last_name, email, city_id, country_id, phone_number, password_hash, active, address, username)
@@ -29,15 +27,14 @@ async function creatUser (user: User): Promise<string> {
     user.address,
     user.username
   ])
-
-  return result.rows[0].user_id as string
+  return result.rows[0].user_id
 }
 
-async function getUser (username: string): Promise<User> {
+async function getUser (email: string): Promise<User> {
   const query = `SELECT 
                       users.user_id, users.first_name, 
                       users.last_name, cities.name,
-                      users.email, users.phone_number,
+                      users.phone_number,
                       users.password_hash, users.active,
                       countries.name, user_type.type_name,
                       users.address
@@ -46,27 +43,27 @@ async function getUser (username: string): Promise<User> {
                       INNER JOIN cities USING(city_id)
                       INNER JOIN countries USING(country_id)
                       INNER JOIN user_type USING(type_id)
-                  WHERE username = $1;`
+                  WHERE email = $1;`
 
-  const results = await pool.query(query, [username])
+  const results = await pool.query(query, [email])
   const row = results.rows[0]
 
   if (row === undefined) {
     throw new DatabaseError(
       ErrorType.REQUEST_BODY_ERROR,
       HttpStatusCode.BAD_REQUEST,
-      'username is not exist',
+      'email is not exist',
       true,
       'postgres'
     )
   }
 
   const user = new User(
-    username,
+    row.username as string,
     row.type as string,
     row.first_name as string,
     row.last_name as string,
-    row.email as string,
+    email,
     row.address as string,
     row.city as string,
     row.country as string,
@@ -74,37 +71,79 @@ async function getUser (username: string): Promise<User> {
     row.password_hash as string,
     row.active as string
   )
-
   return user
 }
 
-async function getLoginCredentials (username: string): Promise<LogingCredentials> {
+async function getLoginCredentials (email: string): Promise<LogingCredentials> {
   const query = `SELECT user_id, password_hash
-                  FROM 
-                    USERS
-                  WHERE 
-                    username = $1;`
-  const results = await pool.query(query, [username])
+                  FROM USERS
+                  WHERE email = $1;`
+
+  const results = await pool.query(query, [email])
   const row = results.rows[0]
 
   if (row === undefined) {
     throw new DatabaseError(
       ErrorType.REQUEST_BODY_ERROR,
       HttpStatusCode.BAD_REQUEST,
-      'username is not exist',
+      'email is not exist',
       true,
       'postgres'
     )
   }
 
+  const userID = row.user_id as string
+  const passwordHash = row.password_hash
+  const groups = await getUserGroups(userID)
+
   return {
-    userID: row.user_id as string,
-    passwordHash: row.password_hash as string
+    userID,
+    passwordHash,
+    groups
   }
 }
+
+async function addUserGroup (userID: string, groups: string[]): Promise<void> {
+  const query = `INSERT INTO app_user_group (user_id, group_id)
+  SELECT $1, group_id FROM app_groups WHERE group_name = ANY ($2);`
+
+  await pool.query(query, [
+    userID,
+    groups
+  ])
+}
+
+async function getUserGroups (userID: string): Promise<string[]> {
+  const query = `SELECT group_name 
+  FROM app_user_group
+  INNER JOIN app_groups USING(group_id)
+  WHERE user_id = $1;`
+
+  const results = await pool.query(query, [
+    userID
+  ])
+
+  const row = results.rows[0]
+  if (row === undefined) {
+    throw new DatabaseError(
+      ErrorType.REQUEST_BODY_ERROR,
+      HttpStatusCode.BAD_REQUEST,
+      'user id is not exist',
+      true,
+      'postgres'
+    )
+  }
+  const groups = row.group_name
+  return groups
+}
+
+// async function activateUser(username: string) {
+//   const query =  `UPDATE users`
+// }
 
 export {
   creatUser,
   getUser,
-  getLoginCredentials
+  getLoginCredentials,
+  addUserGroup
 }

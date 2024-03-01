@@ -6,8 +6,8 @@ async function comparePassword (password: string, hashedPassword: string): Promi
 }
 
 async function hashPassword (password: string): Promise<string> {
-  const salt = await bcrypt.genSalt(stageConfig.SALT_SIZE)
-  return await bcrypt.hash(password, salt as string)
+  const salt = await bcrypt.genSalt(stageConfig.SALT_SIZE as number)
+  return await bcrypt.hash(password, salt)
 }
 
 export {

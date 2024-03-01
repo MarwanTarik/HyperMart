@@ -17,10 +17,6 @@ const pool = new Pool({
   connectionTimeoutMillis: 10000
 })
 
-function getDBPool (): Pool {
-  return pool
-}
-
 pool.on('connect', () => {
   logger.info('DB is connected')
 })
@@ -41,5 +37,5 @@ pool.on('error', (err) => {
 })
 
 export {
-  getDBPool
+  pool
 }
