@@ -1,0 +1,2 @@
+ALTER TABLE app_user_group
+ALTER COLUMN email DROP NOT NULL;
