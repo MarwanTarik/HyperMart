@@ -1,5 +1,5 @@
 class User {
-  ID: string
+  ID: number
   username: string
   type: string
   firstName: string
@@ -11,7 +11,6 @@ class User {
   phoneNumber: string
   hashedPassword: string
   active: string
-  password: string
 
   constructor (
     username: string,
@@ -24,7 +23,8 @@ class User {
     country: string,
     phoneNumber: string,
     hashedPassword: string,
-    active: string
+    active: string,
+    ID?: number
   ) {
     this.username = username
     this.type = type
@@ -37,6 +37,7 @@ class User {
     this.phoneNumber = phoneNumber
     this.hashedPassword = hashedPassword
     this.active = active
+    this.ID = ID ?? -1
   }
 }
 

@@ -1,6 +1,6 @@
 import { type NextFunction, type Request, type Response } from 'express'
 import User from '../model/user-manegment/user.model'
-import { addUserGroup, creatUser, getLoginCredentials } from '../database/queries/user-mangment/user.database'
+import { creatUser, getLoginCredentials } from '../database/queries/user-mangment/user.database'
 import { comparePassword, hashPassword } from '../utils/hash.utils'
 import APIError from '../error/api.error'
 import ErrorType from '../error/error.type'
@@ -23,10 +23,10 @@ async function signup (req: Request, _res: Response, _next: NextFunction): Promi
     await hashPassword(req.body.password as string),
     req.body.active as string
   )
-  const userID = await creatUser(user)
   const userType = req.body.type as string
   const groups: string[] = setGroups(userType)
-  await addUserGroup(userID, groups)
+
+  const userID = await creatUser(user, groups)
 
   if (userID === null) {
     throw new APIError(

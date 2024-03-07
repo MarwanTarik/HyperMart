@@ -12,11 +12,7 @@ async function signupHandler (req: Request, res: Response, _next: NextFunction):
     res.status(HttpStatusCode.OK).json(token)
   } catch (e) {
     logger.error(e)
-    res.status(HttpStatusCode.UNATHORIZED).send({
-      details: e.detail,
-      timeStamp: e.timestamp,
-      level: e.level
-    })
+    res.status(HttpStatusCode.UNATHORIZED).json(e)
   }
 }
 

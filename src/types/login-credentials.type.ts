@@ -1,9 +1,9 @@
-interface LogingCredentials {
-  userID: string
+interface LoginCredentials {
+  userID: number
   passwordHash: string
   groups: string[]
 }
 
 export type {
-  LogingCredentials
+  LoginCredentials
 }

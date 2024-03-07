@@ -1,2 +1,2 @@
-ALTER TABLE app_user_group
+ALTER TABLE IF EXISTS users
 ALTER COLUMN email DROP NOT NULL;
