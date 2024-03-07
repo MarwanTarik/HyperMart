@@ -6,7 +6,7 @@ import errorType from '../error/error.type'
 import httpStatusCode from '../error/error.status'
 import { type AuthPayload } from '../types/jwt-payload.type'
 
-function generateAccessToken (userID: string, groups: string[]): string {
+function generateAccessToken (userID: number, groups: string[]): string {
   const secret = stageConfig.JWT_SECRET as string
   if (secret === undefined) {
     throw new APIError(

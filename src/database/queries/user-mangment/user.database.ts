@@ -10,7 +10,7 @@ import { getCityID } from './cities.database'
 import { getCountryID } from './countries.database'
 import { getUserTypeID } from './user-type.database'
 
-async function creatUser (user: User, groups: string[]): Promise<string> {
+async function creatUser (user: User, groups: string[]): Promise<number> {
   const query = ` INSERT INTO users 
   (first_name, 
     last_name,
@@ -55,7 +55,7 @@ async function creatUser (user: User, groups: string[]): Promise<string> {
     )
   }
   await addUserGroups((row.user_id as number), groups)
-  return row.user_id as string
+  return row.user_id as number
 }
 
 async function getUser (email: string): Promise<User> {
