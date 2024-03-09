@@ -1,13 +1,13 @@
 import { type Request, type Response, type NextFunction } from 'express'
-import { login, signup } from '../controllers/auth.controller'
+import { loginController, signupController } from '../controllers/auth.controller'
 import LoggerService from '../services/logger.service'
 import HttpStatusCode from '../error/error.status'
 
-const logger = new LoggerService('/api/v1/auth/handler').logger
+const logger = new LoggerService('auth/handler').logger
 
 async function signupHandler (req: Request, res: Response, _next: NextFunction): Promise<void> {
   try {
-    const token = await signup(req, res, _next)
+    const token = await signupController(req, res, _next)
     logger.info('sign up succed')
     res.status(HttpStatusCode.OK).json(token)
   } catch (e) {
@@ -18,7 +18,7 @@ async function signupHandler (req: Request, res: Response, _next: NextFunction):
 
 async function loginHandler (req: Request, res: Response, _next: NextFunction): Promise<void> {
   try {
-    const token = await login(req, res, _next)
+    const token = await loginController(req, res, _next)
     logger.info('login succed')
     res.status(HttpStatusCode.OK).json(token)
   } catch (e) {

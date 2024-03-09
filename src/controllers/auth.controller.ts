@@ -8,8 +8,10 @@ import HttpStatusCode from '../error/error.status'
 import { generateAccessToken } from '../utils/auth.utils'
 import UserType from '../model/user-manegment/user-type.model'
 import { GroupsName } from '../model/user-manegment/groups.model'
+import UserStatus from '../model/user-manegment/user-status.model'
+import Descriptions from '../error/descriptions.error'
 
-async function signup (req: Request, _res: Response, _next: NextFunction): Promise<string> {
+async function signupController (req: Request, _res: Response, _next: NextFunction): Promise<string> {
   const user = new User(
     req.body.username as string,
     req.body.type as string,
@@ -32,14 +34,14 @@ async function signup (req: Request, _res: Response, _next: NextFunction): Promi
     throw new APIError(
       ErrorType.REQUEST_BODY_ERROR,
       HttpStatusCode.BAD_REQUEST,
-      'signup failed',
+      Descriptions.SIGNUP_FAILED,
       true
     )
   }
   return generateAccessToken(userID, groups)
 }
 
-async function login (req: Request, _res: Response, _next: NextFunction): Promise<string> {
+async function loginController (req: Request, _res: Response, _next: NextFunction): Promise<string> {
   const email = req.body.email as string
   const password = req.body.password as string
 
@@ -50,7 +52,16 @@ async function login (req: Request, _res: Response, _next: NextFunction): Promis
     throw new APIError(
       ErrorType.REQUEST_BODY_ERROR,
       HttpStatusCode.BAD_REQUEST,
-      'password is not valid',
+      Descriptions.PASSWORD_INVALID,
+      true
+    )
+  }
+
+  if (credentials.userStatus === UserStatus.DISABLED) {
+    throw new APIError(
+      ErrorType.REQUEST_BODY_ERROR,
+      HttpStatusCode.BAD_REQUEST,
+      Descriptions.USER_DISABLED,
       true
     )
   }
@@ -59,7 +70,6 @@ async function login (req: Request, _res: Response, _next: NextFunction): Promis
 
 function setGroups (userType: string): string[] {
   const groups: string[] = []
-
   if (userType === UserType.CUSTOMER) {
     groups.push(GroupsName.USER)
   } else if (userType === UserType.SELLER) {
@@ -69,6 +79,6 @@ function setGroups (userType: string): string[] {
 }
 
 export {
-  signup,
-  login
+  signupController,
+  loginController
 }
