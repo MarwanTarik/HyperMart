@@ -109,7 +109,7 @@ async function getUser (email: string): Promise<User> {
 }
 
 async function getLoginCredentials (email: string): Promise<LoginCredentials> {
-  const query = `SELECT user_id, password_hash
+  const query = `SELECT user_id, password_hash, active
                   FROM users
                   WHERE email = $1;`
   const results = await pool.query(query, [email])
@@ -126,12 +126,14 @@ async function getLoginCredentials (email: string): Promise<LoginCredentials> {
   }
 
   const userID = row.user_id as number
-  const passwordHash = row.password_hash
+  const passwordHash = row.password_hash as string
+  const userStatus = row.active as string
   const groups = await getUserGroups(userID)
 
   return {
     userID,
     passwordHash,
+    userStatus,
     groups
   }
 }
@@ -160,9 +162,9 @@ async function getUserGroups (userID: number): Promise<string[]> {
     throw new APIDatabaseError(
       ErrorType.REQUEST_BODY_ERROR,
       HttpStatusCode.BAD_REQUEST,
-      'user id is not exist',
+      Descriptions.USER_ID_NOT_FOUND,
       true,
-      'postgres'
+      DatabaseSources.POSTGRES
     )
   }
   const groups = row.group_name
@@ -179,10 +181,31 @@ async function updateUserGroups (userID: number, groupID: number): Promise<void>
   ])
 }
 
+async function getUserID (username: string): Promise<string> {
+  const query = `SELECT user_id
+  FROM users
+  WHERE username = $1`
+  const result = await pool.query(query, [
+    username
+  ])
+  const row = result.rows[0]
+
+  if (row === undefined) {
+    throw new APIDatabaseError(
+      ErrorType.REQUEST_BODY_ERROR,
+      HttpStatusCode.BAD_REQUEST,
+      Descriptions.USER_NAME_NOT_FOUND,
+      true,
+      DatabaseSources.POSTGRES
+    )
+  }
+  return row.user_id
+}
+
 async function enableUser (username: string): Promise<void> {
   const query = `UPDATE users
-                 SET active = enabled
-                 WHERE username = ${username}`
+                 SET active = 'enabled'
+                 WHERE username = $1`
   await pool.query(query, [
     username
   ])
@@ -190,8 +213,8 @@ async function enableUser (username: string): Promise<void> {
 
 async function disableUser (username: string): Promise<void> {
   const query = `UPDATE users
-                 SET active = disabled
-                 WHERE username = ${username}`
+                 SET active = 'disabled'
+                 WHERE username = $1`
   await pool.query(query, [
     username
   ])
@@ -226,5 +249,6 @@ export {
   enableUser,
   disableUser,
   getUserStatus,
-  updateUserGroups
+  updateUserGroups,
+  getUserID
 }

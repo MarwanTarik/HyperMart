@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { pool } from '../database/main.database'
 import { getCityID } from '../database/queries/user-mangment/cities.database'
 import { getCountryID } from '../database/queries/user-mangment/countries.database'
@@ -8,12 +9,24 @@ import Cities from '../model/user-manegment/cities.model'
 import Countries from '../model/user-manegment/countries.model'
 import { GroupsName } from '../model/user-manegment/groups.model'
 import User from '../model/user-manegment/user.model'
+import LoggerService from '../services/logger.service'
+
+jest.mock('../services/logger.service', () => {
+  const originalLoggerService = jest.requireActual('../services/logger.service').default
+  return jest.fn(() => ({
+    logger: {
+      info: jest.fn(),
+      error: jest.fn()
+    }
+  }))
+})
+const mockedLoggerService = LoggerService as jest.MockedClass<typeof LoggerService>
 
 const user = new User(
   'starlight',
   'customer',
-  'John',
-  'Doe',
+  'marwan',
+  'tarik',
   'a@gmail.com',
   'address',
   Cities.GIZA,
@@ -28,6 +41,7 @@ const groups = [GroupsName.USER]
 describe('User Management Database Functions', () => {
   beforeEach(async () => {
     await truncateTable('users')
+    jest.clearAllMocks()
   })
 
   afterAll(async () => {

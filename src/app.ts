@@ -3,6 +3,7 @@ import morgan from 'morgan'
 import corsOptionsDelegate from './configs/cors.config'
 import cors from 'cors'
 import authRouter from './routes/api/auth.route'
+import userRouter from './routes/api/user.route'
 
 const App = express()
 
@@ -12,5 +13,6 @@ App.use(express.json())
 App.use(express.urlencoded({ extended: true }))
 
 App.use('/api/v1', authRouter)
+App.use('/api/v1', userRouter)
 
 export default App
