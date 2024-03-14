@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS categories (
+  id SERIAL,
+  name VARCHAR(100) UNIQUE NOT NULL,
+  CONSTRAINT category_pk 
+    PRIMARY KEY(id)
+);
