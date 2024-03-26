@@ -3,4 +3,5 @@ VALUES
     ('electronics'),
     ('games'),
     ('clothes'),
-    ('health');
+    ('health'),
+    ('food');

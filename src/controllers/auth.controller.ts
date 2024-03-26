@@ -72,8 +72,10 @@ function setGroups (userType: string): string[] {
   const groups: string[] = []
   if (userType === UserType.CUSTOMER) {
     groups.push(GroupsName.USER)
+    groups.push(GroupsName.CUSTOMER)
   } else if (userType === UserType.SELLER) {
     groups.push(GroupsName.USER)
+    groups.push(GroupsName.SELLER)
   }
   return groups
 }

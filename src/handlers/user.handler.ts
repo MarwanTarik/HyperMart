@@ -3,7 +3,7 @@ import { type Request, type Response, type NextFunction } from 'express'
 import LoggerService from '../services/logger.service'
 import HttpStatusCode from '../error/error.status'
 
-const logger = new LoggerService('user/handler').logger
+const logger = new LoggerService('handler/user').logger
 
 async function enableUserHandler (req: Request, res: Response, _next: NextFunction): Promise<void> {
   try {

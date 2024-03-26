@@ -1,2 +1,2 @@
 DELETE FROM categories 
-WHERE name IN ('electronics', 'games', 'clothes', 'health');
+WHERE name IN ('electronics', 'games', 'clothes', 'health', 'food');

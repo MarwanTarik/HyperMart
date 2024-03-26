@@ -4,6 +4,7 @@ import corsOptionsDelegate from './configs/cors.config'
 import cors from 'cors'
 import authRouter from './routes/api/auth.route'
 import userRouter from './routes/api/user.route'
+import productRouter from './routes/api/product.route'
 
 const App = express()
 
@@ -14,5 +15,6 @@ App.use(express.urlencoded({ extended: true }))
 
 App.use('/api/v1', authRouter)
 App.use('/api/v1', userRouter)
+App.use('/api/v1', productRouter)
 
 export default App

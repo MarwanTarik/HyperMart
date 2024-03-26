@@ -8,7 +8,9 @@ const Descriptions = {
   USER_ID_NOT_FOUND: 'User id not found',
   PASSWORD_INVALID: 'Password is invalid',
   USER_DISABLED: 'User is disabled',
-  SIGNUP_FAILED: 'signup failed'
+  SIGNUP_FAILED: 'signup failed',
+  INVALID_PRODUCT: 'no such product exist',
+  UNUTHORIZED_REQUEST: 'unothorized reques'
 }
 
 export default Descriptions

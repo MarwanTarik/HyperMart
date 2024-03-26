@@ -1,7 +1,8 @@
 import { type JwtPayload } from 'jsonwebtoken'
 
 interface AuthPayload extends JwtPayload {
-  userID: string
+  userID: number
+  groups: string[]
 }
 
 export type {

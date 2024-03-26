@@ -17,7 +17,8 @@ const {
   PHONENUMBER_API_KEY,
   JWT_SECRET,
   SALT_SIZE,
-  LOGS_FILE_PATH
+  LOGS_FILE_PATH,
+  PHONE_NUMBER_VLALIDATORE_API
 } = appConfigs.get(stage)
 
 const stageConfig = {
@@ -31,7 +32,8 @@ const stageConfig = {
   PHONENUMBER_API_KEY,
   JWT_SECRET,
   SALT_SIZE,
-  LOGS_FILE_PATH
+  LOGS_FILE_PATH,
+  PHONE_NUMBER_VLALIDATORE_API
 }
 
 export default stageConfig

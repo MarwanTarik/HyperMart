@@ -12,7 +12,8 @@ const development = {
   PHONENUMBER_API_KEY: environment.PHONENUMBER_API_KEY,
   JWT_SECRET: environment.DEV_JWT_TOKEN_SECRET,
   SALT_SIZE: environment.SALT_SIZE,
-  LOGS_FILE_PATH: environment.LOGS_FILE_PATH
+  LOGS_FILE_PATH: environment.LOGS_FILE_PATH,
+  PHONE_NUMBER_VLALIDATORE_API: environment.PHONE_NUMBER_VLALIDATORE_API
 }
 
 export default development

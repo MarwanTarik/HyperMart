@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS products (
   id SERIAL,
   name VARCHAR(200) NOT NULL,
   price_per_unit INTEGER NOT NULL,
-  decription VARCHAR(500),
+  description VARCHAR(500),
   quantity INTEGER NOT NULL,
   category_id INTEGER NOT NULL,
   user_id INTEGER NOT NULL,

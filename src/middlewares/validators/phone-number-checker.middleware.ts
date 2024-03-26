@@ -4,6 +4,8 @@ import ErrorType from '../../error/error.type'
 import HttpStatusCode from '../../error/error.status'
 import APIError from '../../error/api.error'
 
+const api = stageConfig.PHONE_NUMBER_VLALIDATORE_API as string
+
 class PhoneNumberChecker {
   private readonly phoneNumber: string
   private readonly countryCode: string
@@ -28,7 +30,7 @@ class PhoneNumberChecker {
       )
     }
 
-    const phoneNumberAPI = `https://api-bdc.net/data/phone-number-validate?number=${phone}&countryCode=${countryCode}&localityLanguage=en&key=${apiKey}`
+    const phoneNumberAPI = `${api}?number=${phone}&countryCode=${countryCode}&localityLanguage=en&key=${apiKey}`
     const res = await fetch(phoneNumberAPI, { method: 'GET' })
 
     if (res === undefined) {
@@ -37,7 +39,7 @@ class PhoneNumberChecker {
         HttpStatusCode.BAD_REQUEST,
         'API response is undefined',
         false,
-        'https://api-bdc.net/data/phone-number-validate'
+        api
       )
     }
 

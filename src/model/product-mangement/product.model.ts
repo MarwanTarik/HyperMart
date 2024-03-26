@@ -15,8 +15,8 @@ class Product {
     category: string,
     unit: string,
     description: string,
-    ID?: number,
-    userID?: number
+    userID?: number,
+    ID?: number
   ) {
     this.name = name
     this.pricePerUnit = pricePerUnit

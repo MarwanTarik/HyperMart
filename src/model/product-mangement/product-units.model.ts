@@ -4,7 +4,8 @@ const units = {
   MILLILITRE: 'ml',
   GM: 'gm',
   METER: 'm',
-  CENTIMETER: 'cm'
+  CENTIMETER: 'cm',
+  BOTTLE: 'bottle'
 }
 
 export default units

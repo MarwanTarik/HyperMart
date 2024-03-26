@@ -5,6 +5,7 @@ import APIError from '../error/api.error'
 import errorType from '../error/error.type'
 import httpStatusCode from '../error/error.status'
 import { type AuthPayload } from '../types/jwt-payload.type'
+import { GroupsCredentials } from '../model/user-manegment/groups.model'
 
 function generateAccessToken (userID: number, groups: string[]): string {
   const secret = stageConfig.JWT_SECRET as string
@@ -41,7 +42,15 @@ function authenticateToken (req: Request, _res: Response, _next: NextFunction): 
   return jwt.verify(token, stageConfig.JWT_SECRET as string) as AuthPayload
 }
 
+function checkRole (groups: string[], groupName: string, role: string): boolean {
+  if (groups.includes(groupName)) {
+    return GroupsCredentials[groupName].includes(role)
+  }
+  return false
+}
+
 export {
   generateAccessToken,
-  authenticateToken
+  authenticateToken,
+  checkRole
 }

@@ -4,10 +4,10 @@ import RequestValidators from '../../middlewares/validators/request-validators.m
 import { disableUserHandler, enableUserHandler } from '../../handlers/user.handler'
 
 const router = Router()
-const { userActivation } = RequestValidators
+const { USER_MANGMENT } = RequestValidators
 
 router
-  .post('/user/enable', userActivation, enableUserHandler)
-  .post('/user/disable', userActivation, disableUserHandler)
+  .post('/user/enable', USER_MANGMENT.userActivation, enableUserHandler)
+  .post('/user/disable', USER_MANGMENT.userActivation, disableUserHandler)
 
 export default router

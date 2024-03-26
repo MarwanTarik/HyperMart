@@ -4,4 +4,5 @@ INSERT INTO product_units (unit) VALUES
     ('ml'),
     ('gm'),
     ('m'),
-    ('cm');
+    ('cm'),
+    ('bottle');

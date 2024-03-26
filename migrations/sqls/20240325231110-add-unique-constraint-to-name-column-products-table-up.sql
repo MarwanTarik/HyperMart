@@ -1,0 +1,2 @@
+ALTER TABLE products
+ADD CONSTRAINT uq_name UNIQUE(name);
