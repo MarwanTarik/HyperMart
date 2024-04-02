@@ -5,8 +5,8 @@ import HttpStatusCode from '../error/error.status'
 import ErrorType from '../error/error.type'
 import Product from '../model/product-mangement/product.model'
 
-async function addProductController (product: Product): Promise<void> {
-  await addProductDatabase(product)
+async function addProductController (product: Product): Promise<number> {
+  return await addProductDatabase(product)
 }
 
 async function deleteProductController (productID: number, userID: number): Promise<void> {
@@ -44,14 +44,14 @@ async function getSellerProductController (productID: number, userID: number): P
     )
   }
 
-  const [
+  const {
     name,
     unit,
     pricePerUnit,
     description,
     quantity,
     categoryName
-  ] = result.rows[0]
+  } = result.rows[0]
 
   const product = new Product(
     name as string,
@@ -59,7 +59,9 @@ async function getSellerProductController (productID: number, userID: number): P
     quantity as number,
     categoryName as string,
     unit as string,
-    description as string
+    description as string,
+    userID,
+    productID
   )
   return product
 }
@@ -79,14 +81,15 @@ async function getAllSellerProductsController (userID: number): Promise<Product[
   const products: Product[] = []
 
   result.rows.forEach((row) => {
-    const [
+    const {
       name,
       unit,
       pricePerUnit,
       description,
       quantity,
-      categoryName
-    ] = row
+      categoryName,
+      id
+    } = row
 
     const product = new Product(
       name as string,
@@ -94,7 +97,9 @@ async function getAllSellerProductsController (userID: number): Promise<Product[
       quantity as number,
       categoryName as string,
       unit as string,
-      description as string
+      description as string,
+      userID,
+      id as number
     )
     products.push(product)
   })
@@ -114,14 +119,15 @@ async function getProductController (productID: number): Promise<Product> {
     )
   }
 
-  const [
+  const {
     name,
     unit,
     pricePerUnit,
     description,
     quantity,
-    categoryName
-  ] = result.rows[0]
+    categoryName,
+    userid
+  } = result.rows[0]
 
   const product = new Product(
     name as string,
@@ -129,7 +135,9 @@ async function getProductController (productID: number): Promise<Product> {
     quantity as number,
     categoryName as string,
     unit as string,
-    description as string
+    description as string,
+    userid as number,
+    productID
   )
   return product
 }
@@ -148,14 +156,16 @@ async function listAllProductsController (): Promise<Product[]> {
   const products: Product[] = []
 
   result.rows.forEach((row) => {
-    const [
+    const {
       name,
       unit,
       pricePerUnit,
       description,
       quantity,
-      categoryName
-    ] = row
+      categoryName,
+      userid,
+      id
+    } = row
 
     const product = new Product(
       name as string,
@@ -163,9 +173,10 @@ async function listAllProductsController (): Promise<Product[]> {
       quantity as number,
       categoryName as string,
       unit as string,
-      description as string
+      description as string,
+      userid as number,
+      id as number
     )
-
     products.push(product)
   })
   return products
@@ -185,14 +196,16 @@ async function productSearchController (productName: string): Promise<Product[]>
   const products: Product[] = []
 
   result.rows.forEach((row) => {
-    const [
+    const {
       name,
       unit,
       pricePerUnit,
       description,
       quantity,
-      categoryName
-    ] = row
+      categoryName,
+      userid,
+      id
+    } = row
 
     const product = new Product(
       name as string,
@@ -200,9 +213,10 @@ async function productSearchController (productName: string): Promise<Product[]>
       quantity as number,
       categoryName as string,
       unit as string,
-      description as string
+      description as string,
+      userid as number,
+      id as number
     )
-
     products.push(product)
   })
   return products

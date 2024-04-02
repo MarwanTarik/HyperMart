@@ -8,12 +8,12 @@ const { PRODUCT_MANGEMENT } = RequestValidators
 
 router
   .post('/product', PRODUCT_MANGEMENT.addProduct, addProductHandler)
-  .delete('/product', PRODUCT_MANGEMENT.deleteProduct, deleteProductHandler)
-  .put('/product/price', PRODUCT_MANGEMENT.updateProducrPrice, updateProductPriceHandler)
-  .get('/product/seller', PRODUCT_MANGEMENT.getSellerProduct, getSellerProductHandler)
+  .delete('/product/:productID', PRODUCT_MANGEMENT.deleteProduct, deleteProductHandler)
+  .put('/product/price/:productID', PRODUCT_MANGEMENT.updateProducrPrice, updateProductPriceHandler)
+  .get('/product/seller/:productID', PRODUCT_MANGEMENT.getSellerProduct, getSellerProductHandler)
   .get('/products/seller', getAllSellerProductsHandler)
-  .get('/product', PRODUCT_MANGEMENT.getProduct, getProductHandler)
+  .get('/product/:productID', PRODUCT_MANGEMENT.getProduct, getProductHandler)
   .get('/products', listAllProductsHandler)
-  .get('/product/search', PRODUCT_MANGEMENT.search, productSearchHandler)
+  .get('/product/search/:productName', PRODUCT_MANGEMENT.search, productSearchHandler)
 
 export default router

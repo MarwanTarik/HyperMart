@@ -7,7 +7,7 @@ import HttpStatusCode from '../../../error/error.status'
 import ErrorType from '../../../error/error.type'
 import DatabaseSources from '../../db-source.database'
 
-async function addProductDatabase (product: Product): Promise<void> {
+async function addProductDatabase (product: Product): Promise<number> {
   const query = `INSERT INTO products(
     unit_id,
     name,
@@ -25,7 +25,8 @@ async function addProductDatabase (product: Product): Promise<void> {
       $5,
       (SELECT id FROM categories WHERE name = $6),
       $7
-    )`
+    )
+  RETURNING id`
   const result = await pool.query(query, [
     product.unit,
     product.name,
@@ -36,7 +37,7 @@ async function addProductDatabase (product: Product): Promise<void> {
     product.userID
   ])
 
-  if (result === undefined) {
+  if (result.rows.length === 0) {
     throw new APIDatabaseError(
       ErrorType.DATABASE_ERROR,
       HttpStatusCode.NOT_FOUND,
@@ -45,6 +46,7 @@ async function addProductDatabase (product: Product): Promise<void> {
       DatabaseSources.POSTGRES
     )
   }
+  return result.rows[0].id
 }
 
 async function deleteProductDatabase (productID: number, userID: number): Promise<number | null> {
@@ -91,11 +93,11 @@ async function updateProductDatabase (price: number, productID: number, userID: 
 }
 
 async function getSellerProductDatabase (productID: number, userID: number): Promise<QueryResult> {
-  const query = `SELECT name,
+  const query = `SELECT products.name,
   product_units.unit as unit,
-  price_per_nuit as pricePerUnit,
-  description,
-  quantity,
+  products.price_per_unit as pricePerUnit,
+  products.description,
+  products.quantity,
   categories.name as categoryName
   FROM products
   INNER JOIN product_units 
@@ -122,18 +124,19 @@ async function getSellerProductDatabase (productID: number, userID: number): Pro
 }
 
 async function getAllSellerProductsDatabase (userID: number): Promise<QueryResult> {
-  const query = `SELECT name,
+  const query = `SELECT products.id,
+  products.name,
   product_units.unit as unit,
-  price_per_nuit as pricePerUnit,
-  description,
-  quantity,
+  products.price_per_unit as pricePerUnit,
+  products.description,
+  products.quantity,
   categories.name as categoryName
   FROM products
   INNER JOIN product_units 
   ON products.unit_id = product_units.id
   INNER JOIN categories
   ON products.category_id = categories.id
-  WHERE user_id = $2
+  WHERE user_id = $1
   `
   const result = await pool.query(query, [
     userID
@@ -152,11 +155,12 @@ async function getAllSellerProductsDatabase (userID: number): Promise<QueryResul
 }
 
 async function getProductDatabase (productID: number): Promise<QueryResult> {
-  const query = `SELECT name,
+  const query = `SELECT products.user_id as userid,
+  products.name,
   product_units.unit as unit,
-  price_per_nuit as pricePerUnit,
-  description,
-  quantity,
+  products.price_per_unit as pricePerUnit,
+  products.description,
+  products.quantity,
   categories.name as categoryName
   FROM products
   INNER JOIN product_units 
@@ -182,11 +186,13 @@ async function getProductDatabase (productID: number): Promise<QueryResult> {
 }
 
 async function listAllProductsDatabase (): Promise<QueryResult> {
-  const query = `SELECT name,
+  const query = `SELECT products.user_id as userID,
+  products.id,
+  products.name,
   product_units.unit as unit,
-  price_per_nuit as pricePerUnit,
-  description,
-  quantity,
+  products.price_per_unit as pricePerUnit,
+  products.description,
+  products.quantity,
   categories.name as categoryName
   FROM products
   INNER JOIN product_units 
@@ -209,11 +215,13 @@ async function listAllProductsDatabase (): Promise<QueryResult> {
 }
 
 async function productSearchDatabase (productName: string): Promise<QueryResult> {
-  const query = `SELECT name,
+  const query = `SELECT products.user_id as userID,
+  products.id,
+  products.name,
   product_units.unit as unit,
-  price_per_nuit as pricePerUnit,
-  description,
-  quantity,
+  products.price_per_unit as pricePerUnit,
+  products.description,
+  products.quantity,
   categories.name as categoryName
   FROM products
   INNER JOIN product_units 

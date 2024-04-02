@@ -6,13 +6,11 @@ import User from '../../../model/user-manegment/user.model'
 import { type LoginCredentials } from '../../../types/login-credentials.type'
 import DatabaseSources from '../../db-source.database'
 import { pool } from '../../main.database'
-import { getCityID } from './cities.database'
-import { getCountryID } from './countries.database'
-import { getUserTypeID } from './user-type.database'
 
 async function creatUser (user: User, groups: string[]): Promise<number> {
   const query = ` INSERT INTO users 
-  (first_name, 
+  (
+    first_name, 
     last_name,
     email, 
     city_id, 
@@ -22,30 +20,38 @@ async function creatUser (user: User, groups: string[]): Promise<number> {
     active,
     address,
     username,
-    type_id)
-  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) 
+    type_id
+  )
+  VALUES (
+    $1,
+    $2,
+    $3,
+    (SELECT city_id FROM cities WHERE name = $4),
+    (SELECT country_id FROM countries WHERE name = $5),
+    $6,
+    $7,
+    $8,
+    $9,
+    $10, 
+    (SELECT type_id FROM user_type WHERE type_name = $11)
+  ) 
   RETURNING user_id`
-
-  const cityID = await getCityID(user.city)
-  const countryID = await getCountryID(user.country)
-  const typeID = await getUserTypeID(user.type)
 
   const result = await pool.query(query, [
     user.firstName,
     user.lastName,
     user.email,
-    cityID,
-    countryID,
+    user.city,
+    user.country,
     user.phoneNumber,
     user.hashedPassword,
     user.active,
     user.address,
     user.username,
-    typeID
+    user.type
   ])
-  const row = result.rows[0]
 
-  if (row === undefined) {
+  if (result.rows.length === 0) {
     throw new APIDatabaseError(
       ErrorType.DATABASE_ERROR,
       HttpStatusCode.INTERNAL_SERVER_ERROR,
@@ -54,6 +60,7 @@ async function creatUser (user: User, groups: string[]): Promise<number> {
       DatabaseSources.POSTGRES
     )
   }
+  const row = result.rows[0]
   await addUserGroups((row.user_id as number), groups)
   return row.user_id as number
 }

@@ -27,7 +27,7 @@ async function signupController (req: Request, _res: Response, _next: NextFuncti
   )
   const userType = req.body.type as string
   const groups: string[] = setGroups(userType)
-
+  console.log(groups)
   const userID = await creatUser(user, groups)
 
   if (userID === null) {

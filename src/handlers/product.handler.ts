@@ -15,6 +15,7 @@ const logger = new LoggerService('handler/product').logger
 async function addProductHandler (req: Request, res: Response, _next: NextFunction): Promise<void> {
   try {
     const { userID, groups } = authenticateToken(req, res, _next)
+    console.log(userID, groups)
     if (!checkRole(groups, GroupsName.SELLER, Roles.ADD_PRODUCT)) {
       throw new APIError(
         ErrorType.AUTH_ERROR,
@@ -25,16 +26,17 @@ async function addProductHandler (req: Request, res: Response, _next: NextFuncti
     }
     const product = new Product(
       req.body.name as string,
-      req.body.pricePerUnit as number,
+      req.body.price as number,
       req.body.quantity as number,
       req.body.category as string,
       req.body.unit as string,
       req.body.description as string,
       userID
     )
-    await addProductController(product)
+    const productID = await addProductController(product)
+    product.ID = productID
     logger.info(`seller with id ${userID} add new product with name ${req.body.name} added`)
-    res.send(HttpStatusCode.OK)
+    res.status(HttpStatusCode.OK).json(product)
   } catch (e) {
     logger.error(e)
     res.status(HttpStatusCode.BAD_REQUEST).json(e)
@@ -43,7 +45,7 @@ async function addProductHandler (req: Request, res: Response, _next: NextFuncti
 
 async function deleteProductHandler (req: Request, res: Response, _next: NextFunction): Promise<void> {
   try {
-    const productID = req.body.productID as number
+    const productID = Number(req.params.productID)
     const { userID, groups } = authenticateToken(req, res, _next)
     if (!checkRole(groups, GroupsName.SELLER, Roles.DELETE_PRODUCT)) {
       throw new APIError(
@@ -55,7 +57,9 @@ async function deleteProductHandler (req: Request, res: Response, _next: NextFun
     }
     await deleteProductController(productID, userID)
     logger.info(`seller ${userID} delete product with id ${productID}`)
-    res.send(HttpStatusCode.OK)
+    res.status(HttpStatusCode.OK).json({
+      'deleted-product-id': productID
+    })
   } catch (e) {
     logger.error(e)
     res.status(HttpStatusCode.BAD_REQUEST).json(e)
@@ -65,7 +69,7 @@ async function deleteProductHandler (req: Request, res: Response, _next: NextFun
 async function updateProductPriceHandler (req: Request, res: Response, _next: NextFunction): Promise<void> {
   try {
     const price = req.body.price as number
-    const productID = req.body.productID as number
+    const productID = Number(req.params.productID)
     const { userID, groups } = authenticateToken(req, res, _next)
     if (!checkRole(groups, GroupsName.SELLER, Roles.UPDATE_PRODUCT_PRICE)) {
       throw new APIError(
@@ -77,7 +81,10 @@ async function updateProductPriceHandler (req: Request, res: Response, _next: Ne
     }
     await updateProductPriceController(price, productID, userID)
     logger.info(`seller ${userID} change product ${productID} price`)
-    res.send(HttpStatusCode.OK)
+    res.status(HttpStatusCode.OK).json({
+      'product-id': productID,
+      price
+    })
   } catch (e) {
     logger.error(e)
     res.status(HttpStatusCode.BAD_REQUEST).json(e)
@@ -86,7 +93,7 @@ async function updateProductPriceHandler (req: Request, res: Response, _next: Ne
 
 async function getSellerProductHandler (req: Request, res: Response, _next: NextFunction): Promise<void> {
   try {
-    const productID = req.body.productID as number
+    const productID = Number(req.params.productID)
     const { userID, groups } = authenticateToken(req, res, _next)
     if (!checkRole(groups, GroupsName.SELLER, Roles.GET_PRODUCT)) {
       throw new APIError(
@@ -127,9 +134,9 @@ async function getAllSellerProductsHandler (req: Request, res: Response, _next: 
 
 async function getProductHandler (req: Request, res: Response, _next: NextFunction): Promise<void> {
   try {
-    const productID = req.body.productID as number
+    const productID = Number(req.params.productID)
     const { userID, groups } = authenticateToken(req, res, _next)
-    if (!checkRole(groups, GroupsName.SELLER, Roles.GET_PRODUCT)) {
+    if (!checkRole(groups, GroupsName.CUSTOMER, Roles.GET_PRODUCT)) {
       throw new APIError(
         ErrorType.AUTH_ERROR,
         HttpStatusCode.UNATHORIZED,
@@ -149,6 +156,7 @@ async function getProductHandler (req: Request, res: Response, _next: NextFuncti
 async function listAllProductsHandler (req: Request, res: Response, _next: NextFunction): Promise<void> {
   try {
     const { userID, groups } = authenticateToken(req, res, _next)
+    console.log(userID, groups)
     if (!checkRole(groups, GroupsName.CUSTOMER, Roles.GET_PRODUCT)) {
       throw new APIError(
         ErrorType.AUTH_ERROR,
@@ -177,7 +185,7 @@ async function productSearchHandler (req: Request, res: Response, _next: NextFun
         true
       )
     }
-    const productName = req.body.productName as string
+    const productName = req.params.productName
     const product = await productSearchController(productName)
     logger.info(`user with id ${userID} searched on product ${productName}`)
     res.status(HttpStatusCode.OK).json(product)

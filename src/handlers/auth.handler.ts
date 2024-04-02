@@ -8,7 +8,7 @@ const logger = new LoggerService('auth/handler').logger
 async function signupHandler (req: Request, res: Response, _next: NextFunction): Promise<void> {
   try {
     const token = await signupController(req, res, _next)
-    logger.info('sign up succed')
+    logger.info('sign up successd')
     res.status(HttpStatusCode.OK).json(token)
   } catch (e) {
     logger.error(e)
