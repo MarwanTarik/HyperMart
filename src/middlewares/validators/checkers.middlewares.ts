@@ -56,7 +56,7 @@ const checkers = {
     .exists()
     .isString()
     .notEmpty(),
-  productPrice: body('pricePerUnit')
+  productPrice: body('price')
     .exists()
     .isNumeric()
     .notEmpty(),

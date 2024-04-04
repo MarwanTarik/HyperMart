@@ -15,7 +15,7 @@ const logger = new LoggerService('handler/product').logger
 async function addProductHandler (req: Request, res: Response, _next: NextFunction): Promise<void> {
   try {
     const { userID, groups } = authenticateToken(req, res, _next)
-    console.log(userID, groups)
+    console.log(groups)
     if (!checkRole(groups, GroupsName.SELLER, Roles.ADD_PRODUCT)) {
       throw new APIError(
         ErrorType.AUTH_ERROR,
@@ -39,7 +39,8 @@ async function addProductHandler (req: Request, res: Response, _next: NextFuncti
     res.status(HttpStatusCode.OK).json(product)
   } catch (e) {
     logger.error(e)
-    res.status(HttpStatusCode.BAD_REQUEST).json(e)
+    const statusCode: number = (e?.httpStatusCode !== undefined) ? e.httpStatusCode : HttpStatusCode.INTERNAL_SERVER_ERROR
+    res.status(statusCode).json(e)
   }
 }
 
@@ -58,11 +59,12 @@ async function deleteProductHandler (req: Request, res: Response, _next: NextFun
     await deleteProductController(productID, userID)
     logger.info(`seller ${userID} delete product with id ${productID}`)
     res.status(HttpStatusCode.OK).json({
-      'deleted-product-id': productID
+      productID
     })
   } catch (e) {
     logger.error(e)
-    res.status(HttpStatusCode.BAD_REQUEST).json(e)
+    const statusCode: number = (e?.httpStatusCode !== undefined) ? e.httpStatusCode : HttpStatusCode.INTERNAL_SERVER_ERROR
+    res.status(statusCode).json(e)
   }
 }
 
@@ -82,12 +84,13 @@ async function updateProductPriceHandler (req: Request, res: Response, _next: Ne
     await updateProductPriceController(price, productID, userID)
     logger.info(`seller ${userID} change product ${productID} price`)
     res.status(HttpStatusCode.OK).json({
-      'product-id': productID,
+      productID,
       price
     })
   } catch (e) {
     logger.error(e)
-    res.status(HttpStatusCode.BAD_REQUEST).json(e)
+    const statusCode: number = (e?.httpStatusCode !== undefined) ? e.httpStatusCode : HttpStatusCode.INTERNAL_SERVER_ERROR
+    res.status(statusCode).json(e)
   }
 }
 
@@ -108,7 +111,8 @@ async function getSellerProductHandler (req: Request, res: Response, _next: Next
     res.status(HttpStatusCode.OK).json(product)
   } catch (e) {
     logger.error(e)
-    res.status(HttpStatusCode.BAD_REQUEST).json(e)
+    const statusCode: number = (e?.httpStatusCode !== undefined) ? e.httpStatusCode : HttpStatusCode.INTERNAL_SERVER_ERROR
+    res.status(statusCode).json(e)
   }
 }
 
@@ -128,7 +132,8 @@ async function getAllSellerProductsHandler (req: Request, res: Response, _next: 
     res.status(HttpStatusCode.OK).json(products)
   } catch (e) {
     logger.error(e)
-    res.status(HttpStatusCode.BAD_REQUEST).json(e)
+    const statusCode: number = (e?.httpStatusCode !== undefined) ? e.httpStatusCode : HttpStatusCode.INTERNAL_SERVER_ERROR
+    res.status(statusCode).json(e)
   }
 }
 
@@ -149,14 +154,14 @@ async function getProductHandler (req: Request, res: Response, _next: NextFuncti
     res.status(HttpStatusCode.OK).json(product)
   } catch (e) {
     logger.error(e)
-    res.status(HttpStatusCode.BAD_REQUEST).json(e)
+    const statusCode: number = (e?.httpStatusCode !== undefined) ? e.httpStatusCode : HttpStatusCode.INTERNAL_SERVER_ERROR
+    res.status(statusCode).json(e)
   }
 }
 
 async function listAllProductsHandler (req: Request, res: Response, _next: NextFunction): Promise<void> {
   try {
     const { userID, groups } = authenticateToken(req, res, _next)
-    console.log(userID, groups)
     if (!checkRole(groups, GroupsName.CUSTOMER, Roles.GET_PRODUCT)) {
       throw new APIError(
         ErrorType.AUTH_ERROR,
@@ -170,7 +175,8 @@ async function listAllProductsHandler (req: Request, res: Response, _next: NextF
     res.status(HttpStatusCode.OK).json(products)
   } catch (e) {
     logger.error(e)
-    res.status(HttpStatusCode.BAD_REQUEST).json(e)
+    const statusCode: number = (e?.httpStatusCode !== undefined) ? e.httpStatusCode : HttpStatusCode.INTERNAL_SERVER_ERROR
+    res.status(statusCode).json(e)
   }
 }
 
@@ -191,7 +197,8 @@ async function productSearchHandler (req: Request, res: Response, _next: NextFun
     res.status(HttpStatusCode.OK).json(product)
   } catch (e) {
     logger.error(e)
-    res.status(HttpStatusCode.BAD_REQUEST).json(e)
+    const statusCode: number = (e?.httpStatusCode !== undefined) ? e.httpStatusCode : HttpStatusCode.INTERNAL_SERVER_ERROR
+    res.status(statusCode).json(e)
   }
 }
 

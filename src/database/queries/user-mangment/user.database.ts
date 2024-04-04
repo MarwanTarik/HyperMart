@@ -2,6 +2,7 @@ import APIDatabaseError from '../../../error/database.error'
 import Descriptions from '../../../error/descriptions.error'
 import HttpStatusCode from '../../../error/error.status'
 import ErrorType from '../../../error/error.type'
+import UserStatus from '../../../model/user-manegment/user-status.model'
 import User from '../../../model/user-manegment/user.model'
 import { type LoginCredentials } from '../../../types/login-credentials.type'
 import DatabaseSources from '../../db-source.database'
@@ -211,18 +212,20 @@ async function getUserID (username: string): Promise<string> {
 
 async function enableUser (username: string): Promise<void> {
   const query = `UPDATE users
-                 SET active = 'enabled'
-                 WHERE username = $1`
+                 SET active = '$1'
+                 WHERE username = $2`
   await pool.query(query, [
+    UserStatus.ENABLED,
     username
   ])
 }
 
 async function disableUser (username: string): Promise<void> {
   const query = `UPDATE users
-                 SET active = 'disabled'
-                 WHERE username = $1`
+                 SET active = $1
+                 WHERE username = $2`
   await pool.query(query, [
+    UserStatus.DISABLED,
     username
   ])
 }

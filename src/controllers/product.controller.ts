@@ -47,17 +47,17 @@ async function getSellerProductController (productID: number, userID: number): P
   const {
     name,
     unit,
-    pricePerUnit,
+    price,
     description,
     quantity,
-    categoryName
+    category
   } = result.rows[0]
 
   const product = new Product(
     name as string,
-    pricePerUnit as number,
+    price as number,
     quantity as number,
-    categoryName as string,
+    category as string,
     unit as string,
     description as string,
     userID,
@@ -84,22 +84,22 @@ async function getAllSellerProductsController (userID: number): Promise<Product[
     const {
       name,
       unit,
-      pricePerUnit,
+      price,
       description,
       quantity,
-      categoryName,
-      id
+      category,
+      ID
     } = row
 
     const product = new Product(
       name as string,
-      pricePerUnit as number,
+      price as number,
       quantity as number,
-      categoryName as string,
+      category as string,
       unit as string,
       description as string,
       userID,
-      id as number
+      ID as number
     )
     products.push(product)
   })
@@ -122,21 +122,21 @@ async function getProductController (productID: number): Promise<Product> {
   const {
     name,
     unit,
-    pricePerUnit,
+    price,
     description,
     quantity,
-    categoryName,
-    userid
+    category,
+    userID
   } = result.rows[0]
 
   const product = new Product(
     name as string,
-    pricePerUnit as number,
+    price as number,
     quantity as number,
-    categoryName as string,
+    category as string,
     unit as string,
     description as string,
-    userid as number,
+    userID as number,
     productID
   )
   return product
@@ -159,23 +159,23 @@ async function listAllProductsController (): Promise<Product[]> {
     const {
       name,
       unit,
-      pricePerUnit,
+      price,
       description,
       quantity,
-      categoryName,
-      userid,
-      id
+      category,
+      userID,
+      ID
     } = row
 
     const product = new Product(
       name as string,
-      pricePerUnit as number,
+      price as number,
       quantity as number,
-      categoryName as string,
+      category as string,
       unit as string,
       description as string,
-      userid as number,
-      id as number
+      userID as number,
+      ID as number
     )
     products.push(product)
   })
@@ -199,23 +199,23 @@ async function productSearchController (productName: string): Promise<Product[]>
     const {
       name,
       unit,
-      pricePerUnit,
+      price,
       description,
       quantity,
-      categoryName,
-      userid,
-      id
+      category,
+      userID,
+      ID
     } = row
 
     const product = new Product(
       name as string,
-      pricePerUnit as number,
+      price as number,
       quantity as number,
-      categoryName as string,
+      category as string,
       unit as string,
       description as string,
-      userid as number,
-      id as number
+      userID as number,
+      ID as number
     )
     products.push(product)
   })

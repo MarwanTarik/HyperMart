@@ -30,7 +30,7 @@ async function addProductDatabase (product: Product): Promise<number> {
   const result = await pool.query(query, [
     product.unit,
     product.name,
-    product.pricePerUnit,
+    product.price,
     product.description,
     product.quantity,
     product.category,
@@ -95,10 +95,10 @@ async function updateProductDatabase (price: number, productID: number, userID: 
 async function getSellerProductDatabase (productID: number, userID: number): Promise<QueryResult> {
   const query = `SELECT products.name,
   product_units.unit as unit,
-  products.price_per_unit as pricePerUnit,
+  products.price_per_unit as price,
   products.description,
   products.quantity,
-  categories.name as categoryName
+  categories.name as category
   FROM products
   INNER JOIN product_units 
   ON products.unit_id = product_units.id
@@ -124,13 +124,13 @@ async function getSellerProductDatabase (productID: number, userID: number): Pro
 }
 
 async function getAllSellerProductsDatabase (userID: number): Promise<QueryResult> {
-  const query = `SELECT products.id,
+  const query = `SELECT products.id as ID,
   products.name,
   product_units.unit as unit,
-  products.price_per_unit as pricePerUnit,
+  products.price_per_unit as price,
   products.description,
   products.quantity,
-  categories.name as categoryName
+  categories.name as category
   FROM products
   INNER JOIN product_units 
   ON products.unit_id = product_units.id
@@ -155,13 +155,13 @@ async function getAllSellerProductsDatabase (userID: number): Promise<QueryResul
 }
 
 async function getProductDatabase (productID: number): Promise<QueryResult> {
-  const query = `SELECT products.user_id as userid,
+  const query = `SELECT products.user_id as userID,
   products.name,
   product_units.unit as unit,
-  products.price_per_unit as pricePerUnit,
+  products.price_per_unit as price,
   products.description,
   products.quantity,
-  categories.name as categoryName
+  categories.name as category
   FROM products
   INNER JOIN product_units 
   ON products.unit_id = product_units.id
@@ -187,13 +187,13 @@ async function getProductDatabase (productID: number): Promise<QueryResult> {
 
 async function listAllProductsDatabase (): Promise<QueryResult> {
   const query = `SELECT products.user_id as userID,
-  products.id,
+  products.id as ID,
   products.name,
   product_units.unit as unit,
-  products.price_per_unit as pricePerUnit,
+  products.price_per_unit as price,
   products.description,
   products.quantity,
-  categories.name as categoryName
+  categories.name as category
   FROM products
   INNER JOIN product_units 
   ON products.unit_id = product_units.id
@@ -216,13 +216,13 @@ async function listAllProductsDatabase (): Promise<QueryResult> {
 
 async function productSearchDatabase (productName: string): Promise<QueryResult> {
   const query = `SELECT products.user_id as userID,
-  products.id,
+  products.id as ID,
   products.name,
   product_units.unit as unit,
-  products.price_per_unit as pricePerUnit,
+  products.price_per_unit as price,
   products.description,
   products.quantity,
-  categories.name as categoryName
+  categories.name as category
   FROM products
   INNER JOIN product_units 
   ON products.unit_id = product_units.id

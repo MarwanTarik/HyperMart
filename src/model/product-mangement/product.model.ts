@@ -1,6 +1,6 @@
 class Product {
   name: string
-  pricePerUnit: number
+  price: number
   quantity: number
   category: string
   unit: string
@@ -10,7 +10,7 @@ class Product {
 
   constructor (
     name: string,
-    pricePerUnit: number,
+    price: number,
     quantity: number,
     category: string,
     unit: string,
@@ -19,7 +19,7 @@ class Product {
     ID?: number
   ) {
     this.name = name
-    this.pricePerUnit = pricePerUnit
+    this.price = price
     this.quantity = quantity
     this.category = category
     this.unit = unit
