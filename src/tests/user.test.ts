@@ -1,28 +1,33 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-import { creatUser } from '../database/queries/user-mangment/user.database'
-import { truncateTable } from '../database/truncate'
 import Cities from '../model/user-manegment/cities.model'
 import Countries from '../model/user-manegment/countries.model'
-import { GroupsName } from '../model/user-manegment/groups.model'
 import User from '../model/user-manegment/user.model'
-import LoggerService from '../services/logger.service'
 import { type NextFunction, type Request, type Response } from 'express'
 import { disableUserHandler, enableUserHandler } from '../handlers/user.handler'
 import UserStatus from '../model/user-manegment/user-status.model'
 import HttpStatusCode from '../error/error.status'
-import { pool } from '../database/main.database'
 
-jest.mock('../services/logger.service', () => {
-  const originalLoggerService = jest.requireActual('../services/logger.service').default
-  return jest.fn(() => ({
+jest.mock('../database/queries/user-mangment/user.database', () => ({
+  ...jest.requireActual('../database/queries/user-mangment/user.database'),
+  enableUser: jest.fn(),
+  disableUser: jest.fn()
+}))
+
+jest.mock('../services/logger.service', () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation(() => ({
     logger: {
       info: jest.fn(),
       error: jest.fn()
     }
   }))
-})
-const mockedLoggerService = LoggerService as jest.MockedClass<typeof LoggerService>
+}))
+
+const mockResponse: Partial<Response> = {
+  json: jest.fn(),
+  status: jest.fn().mockReturnThis()
+}
+
+const mockNext: jest.MockedFunction<NextFunction> = jest.fn()
 
 const user = new User(
   'starlight',
@@ -38,36 +43,15 @@ const user = new User(
   'enabled',
   1
 )
-const groups = [GroupsName.USER]
 
 describe('test changing user status', () => {
-  const mockRequest = {
-    body: {
-      username: user.username
-    }
-  } as unknown as Request
-
-  const mockResponse: Partial<Response> = {
-    json: jest.fn(),
-    status: jest.fn().mockReturnThis()
-  }
-
-  const mockNext: jest.MockedFunction<NextFunction> = jest.fn()
-
-  beforeAll(async () => {
-    await truncateTable('users')
-    await creatUser(user, groups)
-  })
-
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
-  afterAll(async () => {
-    await pool.end()
-  })
-
   it('test enableUserHandler return json object if user enabled successfully', async () => {
+    const mockRequest = {
+      body: {
+        username: user.username
+      }
+    } as unknown as Request
+
     await enableUserHandler(mockRequest, mockResponse as Response, mockNext)
     expect(mockResponse.status).toHaveBeenCalledWith(HttpStatusCode.OK)
     expect(mockResponse.json).toHaveBeenCalledWith({
@@ -77,11 +61,21 @@ describe('test changing user status', () => {
   })
 
   it('test disableUserHandler return json object if user disabled successfully', async () => {
+    const mockRequest = {
+      body: {
+        username: user.username
+      }
+    } as unknown as Request
+
     await disableUserHandler(mockRequest, mockResponse as Response, mockNext)
     expect(mockResponse.status).toHaveBeenCalledWith(HttpStatusCode.OK)
     expect(mockResponse.json).toHaveBeenCalledWith({
       username: user.username,
       status: UserStatus.DISABLED
     })
+  })
+
+  beforeEach(() => {
+    jest.clearAllMocks()
   })
 })
