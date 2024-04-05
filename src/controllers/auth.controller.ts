@@ -59,7 +59,7 @@ async function loginController (req: Request, _res: Response, _next: NextFunctio
   if (credentials.userStatus === UserStatus.DISABLED) {
     throw new APIError(
       ErrorType.REQUEST_BODY_ERROR,
-      HttpStatusCode.BAD_REQUEST,
+      HttpStatusCode.UNATHORIZED,
       Descriptions.USER_DISABLED,
       true
     )
