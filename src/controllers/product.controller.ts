@@ -88,7 +88,7 @@ async function getAllSellerProductsController (userID: number): Promise<Product[
       description,
       quantity,
       category,
-      id
+      ID
     } = row
 
     const product = new Product(
@@ -99,7 +99,7 @@ async function getAllSellerProductsController (userID: number): Promise<Product[
       unit as string,
       description as string,
       userID,
-      id as number
+      ID as number
     )
     products.push(product)
   })
@@ -126,7 +126,7 @@ async function getProductController (productID: number): Promise<Product> {
     description,
     quantity,
     category,
-    userid
+    userID
   } = result.rows[0]
 
   const product = new Product(
@@ -136,7 +136,7 @@ async function getProductController (productID: number): Promise<Product> {
     category as string,
     unit as string,
     description as string,
-    userid as number,
+    userID as number,
     productID
   )
   return product
@@ -163,8 +163,8 @@ async function listAllProductsController (): Promise<Product[]> {
       description,
       quantity,
       category,
-      userid,
-      id
+      userID,
+      ID
     } = row
 
     const product = new Product(
@@ -174,8 +174,8 @@ async function listAllProductsController (): Promise<Product[]> {
       category as string,
       unit as string,
       description as string,
-      userid as number,
-      id as number
+      userID as number,
+      ID as number
     )
     products.push(product)
   })
@@ -203,8 +203,8 @@ async function productSearchController (productName: string): Promise<Product[]>
       description,
       quantity,
       category,
-      userid,
-      id
+      userID,
+      ID
     } = row
 
     const product = new Product(
@@ -214,8 +214,8 @@ async function productSearchController (productName: string): Promise<Product[]>
       category as string,
       unit as string,
       description as string,
-      userid as number,
-      id as number
+      userID as number,
+      ID as number
     )
     products.push(product)
   })
