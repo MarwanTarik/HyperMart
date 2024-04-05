@@ -18,7 +18,15 @@ jest.mock('../database/queries/product-mangment/product.database', () => ({
     return (
       {
         rows: [
-          product
+          {
+            category: product.category,
+            description: product.description,
+            name: product.name,
+            price: product.price,
+            quantity: product.quantity,
+            unit: product.unit,
+            id: product.ID
+          }
         ]
       }
     )
@@ -27,7 +35,15 @@ jest.mock('../database/queries/product-mangment/product.database', () => ({
     return (
       {
         rows: [
-          product
+          {
+            category: product.category,
+            description: product.description,
+            name: product.name,
+            price: product.price,
+            quantity: product.quantity,
+            unit: product.unit,
+            id: product.ID
+          }
         ]
       }
     )
@@ -36,7 +52,15 @@ jest.mock('../database/queries/product-mangment/product.database', () => ({
     return (
       {
         rows: [
-          product
+          {
+            category: product.category,
+            description: product.description,
+            name: product.name,
+            price: product.price,
+            quantity: product.quantity,
+            unit: product.unit,
+            userid: product.userID
+          }
         ]
       }
     )
@@ -45,7 +69,16 @@ jest.mock('../database/queries/product-mangment/product.database', () => ({
     return (
       {
         rows: [
-          product
+          {
+            id: product.ID,
+            category: product.category,
+            description: product.description,
+            name: product.name,
+            price: product.price,
+            quantity: product.quantity,
+            unit: product.unit,
+            userid: product.userID
+          }
         ]
       }
     )
@@ -54,7 +87,16 @@ jest.mock('../database/queries/product-mangment/product.database', () => ({
     return (
       {
         rows: [
-          product
+          {
+            id: product.ID,
+            category: product.category,
+            description: product.description,
+            name: product.name,
+            price: product.price,
+            quantity: product.quantity,
+            unit: product.unit,
+            userid: product.userID
+          }
         ]
       }
     )
