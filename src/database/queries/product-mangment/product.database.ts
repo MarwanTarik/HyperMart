@@ -124,7 +124,7 @@ async function getSellerProductDatabase (productID: number, userID: number): Pro
 }
 
 async function getAllSellerProductsDatabase (userID: number): Promise<QueryResult> {
-  const query = `SELECT products.id as ID,
+  const query = `SELECT products.id as id,
   products.name,
   product_units.unit as unit,
   products.price_per_unit as price,
@@ -155,7 +155,7 @@ async function getAllSellerProductsDatabase (userID: number): Promise<QueryResul
 }
 
 async function getProductDatabase (productID: number): Promise<QueryResult> {
-  const query = `SELECT products.user_id as userID,
+  const query = `SELECT products.user_id as userid,
   products.name,
   product_units.unit as unit,
   products.price_per_unit as price,
@@ -186,8 +186,8 @@ async function getProductDatabase (productID: number): Promise<QueryResult> {
 }
 
 async function listAllProductsDatabase (): Promise<QueryResult> {
-  const query = `SELECT products.user_id as userID,
-  products.id as ID,
+  const query = `SELECT products.user_id as userid,
+  products.id as id,
   products.name,
   product_units.unit as unit,
   products.price_per_unit as price,
@@ -215,8 +215,8 @@ async function listAllProductsDatabase (): Promise<QueryResult> {
 }
 
 async function productSearchDatabase (productName: string): Promise<QueryResult> {
-  const query = `SELECT products.user_id as userID,
-  products.id as ID,
+  const query = `SELECT products.user_id as userid,
+  products.id as id,
   products.name,
   product_units.unit as unit,
   products.price_per_unit as price,

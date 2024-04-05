@@ -15,7 +15,6 @@ const logger = new LoggerService('handler/product').logger
 async function addProductHandler (req: Request, res: Response, _next: NextFunction): Promise<void> {
   try {
     const { userID, groups } = authenticateToken(req, res, _next)
-    console.log(groups)
     if (!checkRole(groups, GroupsName.SELLER, Roles.ADD_PRODUCT)) {
       throw new APIError(
         ErrorType.AUTH_ERROR,
