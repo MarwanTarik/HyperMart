@@ -164,9 +164,8 @@ async function getUserGroups (userID: number): Promise<string[]> {
   const results = await pool.query(query, [
     userID
   ])
-  const row = results.rows[0]
 
-  if (row === undefined) {
+  if (results.rows.length === 0) {
     throw new APIDatabaseError(
       ErrorType.REQUEST_BODY_ERROR,
       HttpStatusCode.BAD_REQUEST,
@@ -175,7 +174,11 @@ async function getUserGroups (userID: number): Promise<string[]> {
       DatabaseSources.POSTGRES
     )
   }
-  const groups = row.group_name
+
+  const groups: string[] = []
+  results.rows.forEach((row) => {
+    groups.push(row.group_name as string)
+  })
   return groups
 }
 
@@ -212,7 +215,7 @@ async function getUserID (username: string): Promise<string> {
 
 async function enableUser (username: string): Promise<void> {
   const query = `UPDATE users
-                 SET active = '$1'
+                 SET active = $1
                  WHERE username = $2`
   await pool.query(query, [
     UserStatus.ENABLED,
