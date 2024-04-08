@@ -10,9 +10,8 @@ async function getCountryID (countryName: string): Promise<string | undefined> {
                   FROM countries 
                   WHERE name = $1`
   const result = await pool.query(query, [countryName])
-  const row = result.rows[0]
 
-  if (row === undefined) {
+  if (result.rows.length === 0) {
     throw new APIDatabaseError(
       ErrorType.DATABASE_ERROR,
       HttpStatusCode.BAD_REQUEST,
@@ -21,7 +20,7 @@ async function getCountryID (countryName: string): Promise<string | undefined> {
       DatabaseSources.POSTGRES
     )
   }
-  return row.country_id
+  return result.rows[0].country_id
 }
 
 export {

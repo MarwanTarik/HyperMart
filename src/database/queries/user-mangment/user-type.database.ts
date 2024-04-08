@@ -14,7 +14,7 @@ async function getUserTypeID (userType: string): Promise<string> {
     userType
   ])
 
-  if (results.rows === undefined) {
+  if (results.rows.length === 0) {
     throw new APIDatabaseError(
       ErrorType.DATABASE_ERROR,
       HttpStatusCode.BAD_REQUEST,

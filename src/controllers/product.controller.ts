@@ -1,8 +1,4 @@
 import { addProductDatabase, deleteProductDatabase, getAllSellerProductsDatabase, getProductDatabase, getSellerProductDatabase, listAllProductsDatabase, productSearchDatabase, updateProductDatabase } from '../database/queries/product-mangment/product.database'
-import APIError from '../error/api.error'
-import Descriptions from '../error/descriptions.error'
-import HttpStatusCode from '../error/error.status'
-import ErrorType from '../error/error.type'
 import Product from '../model/product-mangement/product.model'
 
 async function addProductController (product: Product): Promise<number> {
@@ -10,39 +6,15 @@ async function addProductController (product: Product): Promise<number> {
 }
 
 async function deleteProductController (productID: number, userID: number): Promise<void> {
-  const affectedRowCount = await deleteProductDatabase(productID, userID)
-  if (affectedRowCount === null) {
-    throw new APIError(
-      ErrorType.REQUEST_BODY_ERROR,
-      HttpStatusCode.NOT_FOUND,
-      Descriptions.INVALID_PRODUCT,
-      true
-    )
-  }
+  await deleteProductDatabase(productID, userID)
 }
 
 async function updateProductPriceController (price: number, productID: number, userID: number): Promise<void> {
-  const affectedRowCount = await updateProductDatabase(price, productID, userID)
-  if (affectedRowCount === null) {
-    throw new APIError(
-      ErrorType.REQUEST_BODY_ERROR,
-      HttpStatusCode.NOT_FOUND,
-      Descriptions.INVALID_PRODUCT,
-      true
-    )
-  }
+  await updateProductDatabase(price, productID, userID)
 }
 
 async function getSellerProductController (productID: number, userID: number): Promise<Product> {
   const result = await getSellerProductDatabase(productID, userID)
-  if (result.rows.length === 0) {
-    throw new APIError(
-      ErrorType.REQUEST_BODY_ERROR,
-      HttpStatusCode.NOT_FOUND,
-      Descriptions.INVALID_PRODUCT,
-      true
-    )
-  }
 
   const {
     name,
@@ -69,17 +41,7 @@ async function getSellerProductController (productID: number, userID: number): P
 async function getAllSellerProductsController (userID: number): Promise<Product[]> {
   const result = await getAllSellerProductsDatabase(userID)
 
-  if (result.rows.length === 0) {
-    throw new APIError(
-      ErrorType.REQUEST_BODY_ERROR,
-      HttpStatusCode.NOT_FOUND,
-      Descriptions.INVALID_PRODUCT,
-      true
-    )
-  }
-
   const products: Product[] = []
-
   result.rows.forEach((row) => {
     const {
       name,
@@ -88,7 +50,7 @@ async function getAllSellerProductsController (userID: number): Promise<Product[
       description,
       quantity,
       category,
-      ID
+      id
     } = row
 
     const product = new Product(
@@ -99,7 +61,7 @@ async function getAllSellerProductsController (userID: number): Promise<Product[
       unit as string,
       description as string,
       userID,
-      ID as number
+      id as number
     )
     products.push(product)
   })
@@ -110,15 +72,6 @@ async function getAllSellerProductsController (userID: number): Promise<Product[
 async function getProductController (productID: number): Promise<Product> {
   const result = await getProductDatabase(productID)
 
-  if (result.rows.length === 0) {
-    throw new APIError(
-      ErrorType.REQUEST_BODY_ERROR,
-      HttpStatusCode.NOT_FOUND,
-      Descriptions.INVALID_PRODUCT,
-      true
-    )
-  }
-
   const {
     name,
     unit,
@@ -126,7 +79,7 @@ async function getProductController (productID: number): Promise<Product> {
     description,
     quantity,
     category,
-    userID
+    userid
   } = result.rows[0]
 
   const product = new Product(
@@ -136,7 +89,7 @@ async function getProductController (productID: number): Promise<Product> {
     category as string,
     unit as string,
     description as string,
-    userID as number,
+    userid as number,
     productID
   )
   return product
@@ -144,17 +97,8 @@ async function getProductController (productID: number): Promise<Product> {
 
 async function listAllProductsController (): Promise<Product[]> {
   const result = await listAllProductsDatabase()
-  if (result.rows.length === 0) {
-    throw new APIError(
-      ErrorType.REQUEST_BODY_ERROR,
-      HttpStatusCode.NOT_FOUND,
-      Descriptions.INVALID_PRODUCT,
-      true
-    )
-  }
 
   const products: Product[] = []
-
   result.rows.forEach((row) => {
     const {
       name,
@@ -163,8 +107,8 @@ async function listAllProductsController (): Promise<Product[]> {
       description,
       quantity,
       category,
-      userID,
-      ID
+      userid,
+      id
     } = row
 
     const product = new Product(
@@ -174,8 +118,8 @@ async function listAllProductsController (): Promise<Product[]> {
       category as string,
       unit as string,
       description as string,
-      userID as number,
-      ID as number
+      userid as number,
+      id as number
     )
     products.push(product)
   })
@@ -184,17 +128,8 @@ async function listAllProductsController (): Promise<Product[]> {
 
 async function productSearchController (productName: string): Promise<Product[]> {
   const result = await productSearchDatabase(productName)
-  if (result.rows.length === 0) {
-    throw new APIError(
-      ErrorType.REQUEST_BODY_ERROR,
-      HttpStatusCode.NOT_FOUND,
-      Descriptions.INVALID_PRODUCT,
-      true
-    )
-  }
 
   const products: Product[] = []
-
   result.rows.forEach((row) => {
     const {
       name,
@@ -203,8 +138,8 @@ async function productSearchController (productName: string): Promise<Product[]>
       description,
       quantity,
       category,
-      userID,
-      ID
+      userid,
+      id
     } = row
 
     const product = new Product(
@@ -214,8 +149,8 @@ async function productSearchController (productName: string): Promise<Product[]>
       category as string,
       unit as string,
       description as string,
-      userID as number,
-      ID as number
+      userid as number,
+      id as number
     )
     products.push(product)
   })

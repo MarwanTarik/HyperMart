@@ -11,9 +11,8 @@ async function getCityID (cityName: string): Promise<string | undefined> {
                   WHERE name = $1`
 
   const result = await pool.query(query, [cityName])
-  const row = result.rows[0]
 
-  if (row === undefined) {
+  if (result.rows.length === 0) {
     throw new APIDatabaseError(
       ErrorType.DATABASE_ERROR,
       HttpStatusCode.BAD_REQUEST,
@@ -22,7 +21,7 @@ async function getCityID (cityName: string): Promise<string | undefined> {
       DatabaseSources.POSTGRES
     )
   }
-  return row.city_id
+  return result.rows[0].city_id
 }
 
 export {

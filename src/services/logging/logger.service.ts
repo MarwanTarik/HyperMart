@@ -1,5 +1,5 @@
 import winston, { type Logger } from 'winston'
-import stageConfig from '../configs/main.config'
+import config from '../../configs/main.config'
 
 class LoggerService {
   logger: Logger
@@ -20,7 +20,7 @@ class LoggerService {
       transports: [
         new winston.transports.Console(),
         new winston.transports.File({
-          filename: `${stageConfig.LOGS_FILE_PATH}/${route}.log`
+          filename: `${config.LOGS_FILE_PATH}/${route}.log`
         })
       ]
     })

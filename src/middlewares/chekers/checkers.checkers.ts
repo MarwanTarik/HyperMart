@@ -1,7 +1,7 @@
 import { body } from 'express-validator'
 import Cities from '../../model/user-manegment/cities.model'
 import Countries from '../../model/user-manegment/countries.model'
-import PhoneNumberChecker from './phone-number-checker.middleware'
+import PhoneNumberChecker from './phone-number-checkers.middleware'
 import categories from '../../model/product-mangement/categories.model'
 import units from '../../model/product-mangement/product-units.model'
 

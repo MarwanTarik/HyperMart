@@ -4,7 +4,7 @@ import { type NextFunction, type Request, type Response } from 'express'
 import APIError from '../error/api.error'
 import errorType from '../error/error.type'
 import httpStatusCode from '../error/error.status'
-import { type AuthPayload } from '../types/jwt-payload.type'
+import { type AuthPayload } from '../types/auth/jwt-payload.type'
 import { GroupsCredentials } from '../model/user-manegment/groups.model'
 
 function generateAccessToken (userID: number, groups: string[]): string {

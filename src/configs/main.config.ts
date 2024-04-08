@@ -21,7 +21,7 @@ const {
   PHONE_NUMBER_VLALIDATORE_API
 } = appConfigs.get(stage)
 
-const stageConfig = {
+const config = {
   stage,
   PORT,
   DB_HOST,
@@ -36,4 +36,4 @@ const stageConfig = {
   PHONE_NUMBER_VLALIDATORE_API
 }
 
-export default stageConfig
+export default config

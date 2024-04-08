@@ -103,7 +103,7 @@ jest.mock('../database/queries/product-mangment/product.database', () => ({
   })
 }))
 
-jest.mock('../services/logger.service', () => ({
+jest.mock('../services/logging/logger.service', () => ({
   __esModule: true,
   default: jest.fn().mockImplementation(() => ({
     logger: {

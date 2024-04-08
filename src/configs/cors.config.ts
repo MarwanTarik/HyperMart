@@ -1,7 +1,8 @@
 import { type CorsOptions, type CorsOptionsDelegate, type CorsRequest } from 'cors'
+import stageConfig from './main.config'
 
 const WHITE_LIST = [
-  'https://api-bdc.net/data/phone-number-validate'
+  stageConfig.PHONE_NUMBER_VLALIDATORE_API
 ]
 
 const corsOptionsDelegate: CorsOptionsDelegate<CorsRequest> = function (req: CorsRequest, callback) {

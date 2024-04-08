@@ -1,5 +1,5 @@
 import { type Request, type Response, type NextFunction } from 'express'
-import LoggerService from '../services/logger.service'
+import LoggerService from '../services/logging/logger.service'
 import HttpStatusCode from '../error/error.status'
 import Product from '../model/product-mangement/product.model'
 import { addProductController, deleteProductController, getAllSellerProductsController, getProductController, getSellerProductController, listAllProductsController, productSearchController, updateProductPriceController } from '../controllers/product.controller'
@@ -15,7 +15,6 @@ const logger = new LoggerService('handler/product').logger
 async function addProductHandler (req: Request, res: Response, _next: NextFunction): Promise<void> {
   try {
     const { userID, groups } = authenticateToken(req, res, _next)
-    console.log(groups)
     if (!checkRole(groups, GroupsName.SELLER, Roles.ADD_PRODUCT)) {
       throw new APIError(
         ErrorType.AUTH_ERROR,

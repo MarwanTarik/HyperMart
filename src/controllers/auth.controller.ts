@@ -81,5 +81,6 @@ function setGroups (userType: string): string[] {
 
 export {
   signupController,
-  loginController
+  loginController,
+  setGroups
 }

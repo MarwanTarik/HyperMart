@@ -4,7 +4,7 @@ import HttpStatusCode from '../../../error/error.status'
 import ErrorType from '../../../error/error.type'
 import UserStatus from '../../../model/user-manegment/user-status.model'
 import User from '../../../model/user-manegment/user.model'
-import { type LoginCredentials } from '../../../types/login-credentials.type'
+import { type LoginCredentials } from '../../../types/auth/login-credentials.type'
 import DatabaseSources from '../../db-source.database'
 import { pool } from '../../main.database'
 
@@ -121,9 +121,8 @@ async function getLoginCredentials (email: string): Promise<LoginCredentials> {
                   FROM users
                   WHERE email = $1;`
   const results = await pool.query(query, [email])
-  const row = results.rows[0]
 
-  if (row === undefined) {
+  if (results.rows.length === 0) {
     throw new APIDatabaseError(
       ErrorType.REQUEST_BODY_ERROR,
       HttpStatusCode.BAD_REQUEST,
@@ -132,7 +131,7 @@ async function getLoginCredentials (email: string): Promise<LoginCredentials> {
       DatabaseSources.POSTGRES
     )
   }
-
+  const row = results.rows[0]
   const userID = row.user_id as number
   const passwordHash = row.password_hash as string
   const userStatus = row.active as string
@@ -199,9 +198,8 @@ async function getUserID (username: string): Promise<string> {
   const result = await pool.query(query, [
     username
   ])
-  const row = result.rows[0]
 
-  if (row === undefined) {
+  if (result.rows.length === 0) {
     throw new APIDatabaseError(
       ErrorType.REQUEST_BODY_ERROR,
       HttpStatusCode.BAD_REQUEST,
@@ -210,6 +208,7 @@ async function getUserID (username: string): Promise<string> {
       DatabaseSources.POSTGRES
     )
   }
+  const row = result.rows[0]
   return row.user_id
 }
 
@@ -217,20 +216,42 @@ async function enableUser (username: string): Promise<void> {
   const query = `UPDATE users
                  SET active = $1
                  WHERE username = $2`
-  await pool.query(query, [
+
+  const result = await pool.query(query, [
     UserStatus.ENABLED,
     username
   ])
+
+  if (result.rowCount === 0) {
+    throw new APIDatabaseError(
+      ErrorType.REQUEST_BODY_ERROR,
+      HttpStatusCode.BAD_REQUEST,
+      Descriptions.USER_NAME_NOT_FOUND,
+      true,
+      DatabaseSources.POSTGRES
+    )
+  }
 }
 
 async function disableUser (username: string): Promise<void> {
   const query = `UPDATE users
                  SET active = $1
                  WHERE username = $2`
-  await pool.query(query, [
+
+  const result = await pool.query(query, [
     UserStatus.DISABLED,
     username
   ])
+
+  if (result.rowCount === 0) {
+    throw new APIDatabaseError(
+      ErrorType.REQUEST_BODY_ERROR,
+      HttpStatusCode.BAD_REQUEST,
+      Descriptions.USER_NAME_NOT_FOUND,
+      true,
+      DatabaseSources.POSTGRES
+    )
+  }
 }
 
 async function getUserStatus (username: string): Promise<string> {
@@ -240,9 +261,8 @@ async function getUserStatus (username: string): Promise<string> {
   const result = await pool.query(query, [
     username
   ])
-  const row = result.rows[0]
 
-  if (row === undefined) {
+  if (result.rows.length === 0) {
     throw new APIDatabaseError(
       ErrorType.REQUEST_BODY_ERROR,
       HttpStatusCode.BAD_REQUEST,
@@ -251,6 +271,7 @@ async function getUserStatus (username: string): Promise<string> {
       DatabaseSources.POSTGRES
     )
   }
+  const row = result.rows[0]
   return row.active
 }
 

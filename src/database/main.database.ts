@@ -3,7 +3,7 @@ import stageConfig from '../configs/main.config'
 import APIDatabaseError from '../error/database.error'
 import ErrorType from '../error/error.type'
 import HttpStatusCode from '../error/error.status'
-import LoggerService from '../services/logger.service'
+import LoggerService from '../services/logging/logger.service'
 
 const logger = new LoggerService('db/postgres').logger
 

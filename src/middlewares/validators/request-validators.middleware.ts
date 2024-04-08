@@ -1,4 +1,4 @@
-import checkers from './checkers.middlewares'
+import checkers from '../chekers/checkers.checkers'
 
 const RequestValidators = {
   USER_MANGMENT: {
