@@ -6,8 +6,8 @@ import { loginHandler, signupHandler } from '../handlers/auth.handler'
 import HttpStatusCode from '../error/error.status'
 import { setGroups } from '../controllers/auth.controller'
 
-jest.mock('../database/queries/user-mangment/user.database', () => ({
-  ...jest.requireActual('../database/queries/user-mangment/user.database'),
+jest.mock('../database/queries/user-manegment/user.database', () => ({
+  ...jest.requireActual('../database/queries/user-manegment/user.database'),
   creatUser: jest.fn(() => user.ID),
   getLoginCredentials: jest.fn(() => {
     return {

@@ -1,7 +1,7 @@
 import { type Request, type Response, type NextFunction } from 'express'
 import LoggerService from '../services/logging/logger.service'
 import HttpStatusCode from '../error/error.status'
-import Product from '../model/product-mangement/product.model'
+import Product from '../model/product-manegment/product.model'
 import { addProductController, deleteProductController, getAllSellerProductsController, getProductController, getSellerProductController, listAllProductsController, productSearchController, updateProductPriceController } from '../controllers/product.controller'
 import { authenticateToken, checkRole } from '../utils/auth.utils'
 import { GroupsName } from '../model/user-manegment/groups.model'

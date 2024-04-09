@@ -1,6 +1,6 @@
 import { type NextFunction, type Request, type Response } from 'express'
 import User from '../model/user-manegment/user.model'
-import { creatUser, getLoginCredentials } from '../database/queries/user-mangment/user.database'
+import { creatUser, getLoginCredentials } from '../database/queries/user-manegment/user.database'
 import { comparePassword, hashPassword } from '../utils/hash.utils'
 import APIError from '../error/api.error'
 import ErrorType from '../error/error.type'

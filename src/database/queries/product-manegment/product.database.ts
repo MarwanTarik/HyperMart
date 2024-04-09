@@ -1,5 +1,5 @@
 import { type QueryResult } from 'pg'
-import type Product from '../../../model/product-mangement/product.model'
+import type Product from '../../../model/product-manegment/product.model'
 import { pool } from '../../main.database'
 import APIDatabaseError from '../../../error/database.error'
 import Descriptions from '../../../error/descriptions.error'

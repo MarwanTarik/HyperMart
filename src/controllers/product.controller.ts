@@ -1,5 +1,5 @@
-import { addProductDatabase, deleteProductDatabase, getAllSellerProductsDatabase, getProductDatabase, getSellerProductDatabase, listAllProductsDatabase, productSearchDatabase, updateProductDatabase } from '../database/queries/product-mangment/product.database'
-import Product from '../model/product-mangement/product.model'
+import { addProductDatabase, deleteProductDatabase, getAllSellerProductsDatabase, getProductDatabase, getSellerProductDatabase, listAllProductsDatabase, productSearchDatabase, updateProductDatabase } from '../database/queries/product-manegment/product.database'
+import Product from '../model/product-manegment/product.model'
 
 async function addProductController (product: Product): Promise<number> {
   return await addProductDatabase(product)

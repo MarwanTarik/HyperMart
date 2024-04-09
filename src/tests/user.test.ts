@@ -3,8 +3,8 @@ import { disableUserHandler, enableUserHandler } from '../handlers/user.handler'
 import UserStatus from '../model/user-manegment/user-status.model'
 import HttpStatusCode from '../error/error.status'
 
-jest.mock('../database/queries/user-mangment/user.database', () => ({
-  ...jest.requireActual('../database/queries/user-mangment/user.database'),
+jest.mock('../database/queries/user-manegment/user.database', () => ({
+  ...jest.requireActual('../database/queries/user-manegment/user.database'),
   enableUser: jest.fn(),
   disableUser: jest.fn()
 }))

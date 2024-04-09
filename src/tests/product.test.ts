@@ -1,16 +1,16 @@
-import Product from '../model/product-mangement/product.model'
+import Product from '../model/product-manegment/product.model'
 import { addProductHandler, deleteProductHandler, getAllSellerProductsHandler, getProductHandler, getSellerProductHandler, listAllProductsHandler, productSearchHandler, updateProductPriceHandler } from '../handlers/product.handler'
 import { type NextFunction, type Request, type Response } from 'express'
 import HttpStatusCode from '../error/error.status'
 import { GroupsName } from '../model/user-manegment/groups.model'
 import * as authUtils from '../utils/auth.utils'
-import categories from '../model/product-mangement/categories.model'
-import units from '../model/product-mangement/product-units.model'
+import categories from '../model/product-manegment/categories.model'
+import units from '../model/product-manegment/product-units.model'
 
 const authenticateTokenSpy = jest.spyOn(authUtils, 'authenticateToken')
 
-jest.mock('../database/queries/product-mangment/product.database', () => ({
-  ...jest.requireActual('../database/queries/product-mangment/product.database'),
+jest.mock('../database/queries/product-manegment/product.database', () => ({
+  ...jest.requireActual('../database/queries/product-manegment/product.database'),
   addProductDatabase: jest.fn(() => product.ID),
   deleteProductDatabase: jest.fn(),
   updateProductDatabase: jest.fn(),

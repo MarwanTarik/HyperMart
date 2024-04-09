@@ -1,4 +1,4 @@
-import { enableUser, disableUser } from '../database/queries/user-mangment/user.database'
+import { enableUser, disableUser } from '../database/queries/user-manegment/user.database'
 
 async function enableUserController (username: string): Promise<void> {
   await enableUser(username)
