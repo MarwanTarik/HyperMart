@@ -6,6 +6,7 @@ import Descriptions from '../../../error/descriptions.error'
 import HttpStatusCode from '../../../error/error.status'
 import ErrorType from '../../../error/error.type'
 import DatabaseSources from '../../db-source.database'
+import APIError from '../../../error/api.error'
 
 async function addProductDatabase (product: Product): Promise<number> {
   const query = `INSERT INTO products(
@@ -243,6 +244,34 @@ async function productSearchDatabase (productName: string): Promise<QueryResult>
   return result
 }
 
+async function getProductsPricesDatabase (productIds: number[]): Promise<number[]> {
+  const query = `
+  SELECT price_per_unit as price
+  FROM products
+  WHERE id = ANY($1)
+`
+
+  const result = await pool.query(query, [
+    productIds
+  ])
+
+  if (result.rows.length < productIds.length) {
+    throw new APIError(
+      ErrorType.REQUEST_BODY_ERROR,
+      HttpStatusCode.BAD_REQUEST,
+      Descriptions.INVALID_PRODUCT,
+      true
+    )
+  }
+
+  const productPrices: number[] = []
+  result.rows.forEach((row) => {
+    productPrices.push(row.price as number)
+  })
+
+  return productPrices
+}
+
 export {
   addProductDatabase,
   deleteProductDatabase,
@@ -251,5 +280,6 @@ export {
   getAllSellerProductsDatabase,
   getProductDatabase,
   listAllProductsDatabase,
-  productSearchDatabase
+  productSearchDatabase,
+  getProductsPricesDatabase
 }

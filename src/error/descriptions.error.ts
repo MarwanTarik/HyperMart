@@ -10,7 +10,9 @@ const Descriptions = {
   USER_DISABLED: 'User is disabled',
   SIGNUP_FAILED: 'signup failed',
   INVALID_PRODUCT: 'no such product exist',
-  UNUTHORIZED_REQUEST: 'unothorized request'
+  UNUTHORIZED_REQUEST: 'unothorized request',
+  UNEXPECTED_ERROR: 'unexpected error',
+  INVALID_ORDER_ID: 'invalid_order_id'
 }
 
 export default Descriptions

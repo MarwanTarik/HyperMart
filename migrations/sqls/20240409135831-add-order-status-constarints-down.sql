@@ -1,0 +1,2 @@
+ALTER TABLE IF EXISTS order_status
+  DROP CONSTRAINT IF EXISTS fk_status_code;

@@ -2,8 +2,8 @@ import { body } from 'express-validator'
 import Cities from '../../model/user-manegment/cities.model'
 import Countries from '../../model/user-manegment/countries.model'
 import PhoneNumberChecker from './phone-number-checkers.middleware'
-import categories from '../../model/product-mangement/categories.model'
-import units from '../../model/product-mangement/product-units.model'
+import categories from '../../model/product-manegment/categories.model'
+import units from '../../model/product-manegment/product-units.model'
 
 const PASSWORD_RGX = /^(?=.*d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/
 
@@ -77,6 +77,22 @@ const checkers = {
   productid: body('productID')
     .exists()
     .isNumeric()
+    .notEmpty(),
+  shippingDate: body('shippingDate')
+    .exists()
+    .isString()
+    .notEmpty(),
+  delivaryCost: body('delivaryCost')
+    .exists()
+    .isNumeric()
+    .notEmpty(),
+  dicount: body('discount')
+    .exists()
+    .isNumeric()
+    .notEmpty(),
+  productDetails: body('products')
+    .exists()
+    .isObject()
     .notEmpty()
 }
 

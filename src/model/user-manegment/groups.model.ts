@@ -19,7 +19,9 @@ const GroupsCredentials = {
   ],
   customer: [
     Roles.GET_PRODUCT,
-    Roles.SEARCH_PRODUCT
+    Roles.SEARCH_PRODUCT,
+    Roles.PLACE_ORDER,
+    Roles.GET_ORDER
   ]
 }
 

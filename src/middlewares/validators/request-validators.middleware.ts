@@ -46,6 +46,14 @@ const RequestValidators = {
     search: [
       checkers.productname
     ]
+  },
+  ORDER_MANGEMENT: {
+    placeOrder: [
+      checkers.address,
+      checkers.shippingDate,
+      checkers.delivaryCost,
+      checkers.dicount
+    ]
   }
 }
 
